@@ -9,20 +9,20 @@ class Maze(object):
 	def __init__(self, dim: int, probability: float, fireProbability: float= None):
 		self.fireProbability = fireProbability
 		self.probability = probability
-		self.dim = dim
+		self.dim = dim  # size of the graph
 		self.grid = [[0 for x in range(dim)] for y in range(dim)] # Make a dim x dim grid
 		self.generateGrid()
 
 	def generateGrid(self) -> None:
 		for i in range(0,self.dim):
 			for j in range(0,self.dim):
-				if(random.uniform(0,1) < self.probability):
+				if(random.uniform(0,1) <= self.probability):
 					self.grid[i][j] = 1
 				else:
 					self.grid[i][j] = 0
 
 		self.grid[0][0] = 0
-		self.grid[-1][-1] = 0;
+		self.grid[-1][-1] = 0
 
 	def getGrid(self):
 		return self.grid
