@@ -1,7 +1,8 @@
 """
 The Maze class represents a single maze, of size nxn with probability weight p.
-
+0 is a free space, 1 is a blocked space, 2 is a fire
 """
+import random
 
 
 class Maze(object):
@@ -9,7 +10,22 @@ class Maze(object):
 		self.fireProbability = fireProbability
 		self.probability = probability
 		self.dim = dim
-		self.grid = ([0] * dim) * dim  # Make a dim x dim grid
+		self.grid = [[0 for x in range(dim)] for y in range(dim)] # Make a dim x dim grid
+		self.generateGrid()
 
 	def generateGrid(self) -> None:
-		print('todo dont look')
+		for i in range(0,self.dim):
+			for j in range(0,self.dim):
+				if(random.uniform(0,1) < self.probability):
+					self.grid[i][j] = 1
+				else:
+					self.grid[i][j] = 0
+
+		self.grid[0][0] = 0
+		self.grid[-1][-1] = 0;
+
+	def getGrid(self):
+		return self.grid
+
+	def updateFire(self):
+		print('not done dont look')
