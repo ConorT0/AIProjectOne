@@ -1,0 +1,1 @@
+class Bfs(AlgoSuper):
