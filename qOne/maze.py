@@ -3,7 +3,6 @@ The Maze class represents a single maze, of size nxn with probability weight p.
 0 is a free space, 1 is a blocked space, 2 is a fire
 """
 import random
-import numpy as np
 
 
 class Maze(object):
@@ -22,7 +21,7 @@ class Maze(object):
 					self.grid[i][j] = 1
 				else:
 					self.grid[i][j] = 0
-
+		# keep start and goal empty
 		self.grid[0][0] = 0
 		self.grid[-1][-1] = 0
 
