@@ -3,6 +3,7 @@ The Maze class represents a single maze, of size nxn with probability weight p.
 0 is a free space, 1 is a blocked space, 2 is a fire
 """
 import random
+import collections
 
 
 class Maze(object):
@@ -22,9 +23,9 @@ class Maze(object):
 					self.grid[i][j] = 1
 				else:
 					self.grid[i][j] = 0
-		# keep start and goal empty
-		self.grid[0][0] = 0
-		self.grid[-1][-1] = 0
+		# put special markers for start and goal
+		self.grid[0][0] = 's'
+		self.grid[-1][-1] = 'g'
 
 	# return an array of the 2d grid
 	def getGrid(self):
@@ -35,7 +36,7 @@ class Maze(object):
 		pass
 
 	# perform a BFS on the grid
-	def bfs(self):
+	def bfs(self, fringe: collections.deque = None, start: dict() = None, goal: dict() = None):
 		pass
 
 	# perform a DFS on the grid
@@ -52,6 +53,21 @@ class Maze(object):
 
 	# perform a bi-directional BFS on the grid
 	def bidirectional_bfs(self):
+		front = dict(x=0, y=0)
+		back = dict(x=self.dim-1, y=self.dim-1)
+		visited = set(front, back)
+		front_queue = collections.deque(front)
+		back_queue = collections.deque(back)
+
+		while front_queue and back_queue:
+			if front_queue:
+				x = front_queue.popleft()
+				if x == back or x in back_queue:
+					return True
+
+
+
+
 		pass
 
 	def printGrid(self):
