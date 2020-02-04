@@ -31,6 +31,10 @@ class Maze(object):
 	def getGrid(self):
 		return self.grid
 
+	# return dimension of the maze
+	def getDim(self):
+		return self.dim
+
 	# TODO: fill out what this method does
 	def updateFire(self):
 		pass
