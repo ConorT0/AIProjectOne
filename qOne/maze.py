@@ -14,6 +14,7 @@ class Maze(object):
 		self.grid = [[0 for x in range(dim)] for y in range(dim)] # Make a dim x dim grid
 		self.generateGrid()
 
+	# create a dim x dim sized grid and fill with spaces based on given probability
 	def generateGrid(self) -> None:
 		for i in range(0,self.dim):
 			for j in range(0,self.dim):
@@ -25,11 +26,33 @@ class Maze(object):
 		self.grid[0][0] = 0
 		self.grid[-1][-1] = 0
 
+	# return an array of the 2d grid
 	def getGrid(self):
 		return self.grid
 
+	# TODO: fill out what this method does
 	def updateFire(self):
-		print('not done dont look')
+		pass
+
+	# perform a BFS on the grid
+	def bfs(self):
+		pass
+
+	# perform a DFS on the grid
+	def dfs(self):
+		pass
+
+	# perform an A* with h(n) = euclidean distance to goal on the grid
+	def astar_euclidean(self):
+		pass
+
+	# perform an A* with h(n) = manhattan distance to goal on the grid
+	def astar_manhattan(self):
+		pass
+
+	# perform a bi-directional BFS on the grid
+	def bidirectional_bfs(self):
+		pass
 
 	def printGrid(self):
 		for i in self.grid:
