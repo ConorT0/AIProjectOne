@@ -1,4 +1,6 @@
 from qOne import maze
-m = maze.Maze(3,1)
-print(m.getGrid())
+
+if __name__ == "__main__":
+	m = maze.Maze(20, 0.2)
+	m.printGrid()
 

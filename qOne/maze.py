@@ -3,9 +3,11 @@ The Maze class represents a single maze, of size nxn with probability weight p.
 0 is a free space, 1 is a blocked space, 2 is a fire
 """
 import random
+import numpy as np
 
 
 class Maze(object):
+
 	def __init__(self, dim: int, probability: float, fireProbability: float= None):
 		self.fireProbability = fireProbability
 		self.probability = probability
@@ -29,3 +31,7 @@ class Maze(object):
 
 	def updateFire(self):
 		print('not done dont look')
+
+	def printGrid(self):
+		for i in self.grid:
+			print(*i, sep=" ")
