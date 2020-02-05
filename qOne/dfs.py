@@ -1,4 +1,5 @@
 import collections
+import time
 import qOne.maze as maze
 class Dfs(object):
 	def __init__(self, maze):
@@ -9,8 +10,10 @@ class Dfs(object):
 		self.search()
 
 	def search(self):
+		startTime = time.perf_counter ()
 		self.fringe.append((0,0))
 		self.prev[0][0] = (0,0)
+		maxFringe = 1
 		#use popleft() to get item from queue
 		while(self.fringe): # This checks if the dequeue is empty? python is such a mystical language...
 			item = self.fringe.popleft() # remove
@@ -26,12 +29,17 @@ class Dfs(object):
 					grid[-1][-1] = 'g'
 					print("Found Solution:")
 					self.maze.printGrid()
+					print("Max fringe size: " + str(maxFringe))
+					print("Took " +str((time.perf_counter () - startTime))+" seconds")
 					return
 				else:
 					self.fringe.append(i) # add valid neighbor to fringe
 					self.prev[i[0]][i[1]] = item # make valid neighbor's prev value the current node.
+			maxFringe = max(maxFringe,len(self.fringe))
 		print("No solution found for:")
 		self.maze.printGrid()
+		print("Max fringe size: " + str(maxFringe))
+		print("Took " + str((time.perf_counter () - startTime)) + " seconds")
 # TODO add checking for goal and  backtracking
 
 
@@ -60,6 +68,6 @@ class Dfs(object):
 
 if __name__ == '__main__':
 
-	m = maze.Maze(10,.2)
+	m = maze.Maze(100,.3)
 	d = Dfs(m)
 
