@@ -16,7 +16,7 @@ class Bfs(object):
             curr = self.fringe.popleft()  # remove first item in queue
             # if goal reached
             if curr == (self.maze.getDim() - 1, self.maze.getDim() - 1):
-                print("Path found") # trace back path and print
+                print("Path found")  # trace back path and print
                 return
             neighbors = self.getValidNeighbors(curr)  # find all valid neighbors
             for n in neighbors:
@@ -55,3 +55,16 @@ class Bfs(object):
             result.append((i, j + 1))
 
         return result
+
+
+if __name__ == '__main__':
+
+    # test getValidNeighbors
+    m = maze.Maze(4, 0.2)
+    grid = m.getGrid()
+    m.printGrid()
+    b = Bfs(m)
+    result = b.getValidNeighbors((1, 1))
+    m.printGrid()
+    for item in result:
+        print(item)
