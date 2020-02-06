@@ -46,7 +46,6 @@ class Dfs(object):
 		self.maze.printGrid()
 		print("Max fringe size: " + str(maxFringe))
 		print("Took " + str((time.perf_counter () - startTime)) + " seconds")
-# TODO add checking for goal and  backtracking
 
 
 
