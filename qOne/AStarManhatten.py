@@ -1,6 +1,6 @@
 import time
 import queue
-import qOne.maze
+import maze
 class AStarManhatten(object):
 	def __init__(self, maze):
 		self.maze = maze

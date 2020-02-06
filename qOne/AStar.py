@@ -1,7 +1,7 @@
 import time
 import queue
 import math
-import qOne.maze
+import maze
 
 
 class AStarEuclid(object):

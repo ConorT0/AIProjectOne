@@ -1,6 +1,8 @@
 import collections
 import time
-import qOne.maze as maze
+import maze
+
+
 class Dfs(object):
 	def __init__(self, maze):
 		self.maze = maze
