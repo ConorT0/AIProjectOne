@@ -32,7 +32,7 @@ class BiDirectionalBFS:
 			# if the current front node that was taken off the front_fringe
 			# has already been visited by the back path
 			# then the front crossed the a path the back already explored
-			if f in self.back_previous:
+			if f in self.back_visited:
 				# back bfs already crossed this path
 				return self.generate_path_from(f)
 
@@ -51,7 +51,7 @@ class BiDirectionalBFS:
 			# if the current front node that was taken off the front_fringe
 			# has already been visited by the back path
 			# then the front crossed the a path the back already explored
-			if b in self.front_previous:
+			if b in self.front_visited:
 				# front bfs already crossed this path
 				return self.generate_path_from(b)
 			else:
@@ -64,9 +64,9 @@ class BiDirectionalBFS:
 				for n in valid_nodes:
 					self.back_previous[n] = b
 
-				self.back_visited.add(f)
+				self.back_visited.add(b)
 
-		pass
+		return "failure"
 
 	def find_valid_adjacent_nodes(self, matrix_node: tuple, visited: set):
 
@@ -77,6 +77,8 @@ class BiDirectionalBFS:
 
 		grid = self.maze.getGrid()
 
+		# check if the adjacent nodes are within the bounds of the grid
+		# also check if the adjacent nodes aren't blocked off
 		if r > 0:
 			n = (r - 1, c)
 			if grid[r - 1][c] != 1:
@@ -97,6 +99,7 @@ class BiDirectionalBFS:
 		return valid_nodes
 
 	def generate_path_from(self, node: tuple):
+		# connect the two paths at the middle
 		f,b = node, node
 		f_path, b_path = [], []
 		m = self.maze.getGrid()
@@ -114,13 +117,15 @@ class BiDirectionalBFS:
 			b = self.back_previous[b]
 
 		f_path.reverse()
+		# start b_path from 1 instead of 0 since they both contain same node
+		# we could also do f_path[:-1]
 		res = f_path + b_path[1:]
 		return res
 
 
 if __name__ == "__main__":
 
-	myM = maze.Maze(5, 0.1)
+	myM = maze.Maze(10, 0.1)
 	doB = BiDirectionalBFS(myM)
 	myM.printGrid()
 	print(doB.search())
