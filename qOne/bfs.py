@@ -1,5 +1,5 @@
 import collections
-import qOne.maze as maze
+import maze
 
 
 class Bfs(object):
