@@ -69,37 +69,29 @@ class BiDirectionalBFS:
 
 		valid_nodes = queue()
 
-		row = matrix_node[0]
-		col = matrix_node[1]
+		r = matrix_node[0]
+		c = matrix_node[1]
 
 		grid = self.maze.getGrid()
 
 		# check if the adjacent nodes are within the bounds of the grid
 		# also check if the adjacent nodes aren't blocked off
-		possible_adjacent_cells = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
-
-		for cell in possible_adjacent_cells:
-			r = cell[0]
-			c = cell[1]
-
-			if row > 0 and :
-				if grid[r][c] != 1:
-					cell not in visited and valid_nodes.append(cell)
-			if row < self.maze.getDim() - 1:
-				n = (r + 1, c)
-				if grid[r + 1][c] != 1:
-					n not in visited and valid_nodes.append(n)
-			if col > 0:
-				n = (r, c - 1)
-				if grid[r][c - 1] != 1:
-					n not in visited and valid_nodes.append(n)
-			if col < self.maze.getDim() - 1:
-				n = (r, c + 1)
-				if grid[r][c + 1] != 1:
-					n not in visited and valid_nodes.append(n)
-
-
-
+		if r > 0:
+			n = (r - 1, c)
+			if grid[r - 1][c] != 1:
+				n not in visited and valid_nodes.append(n)
+		if r < self.maze.getDim() - 1:
+			n = (r + 1, c)
+			if grid[r + 1][c] != 1:
+				n not in visited and valid_nodes.append(n)
+		if c > 0:
+			n = (r, c - 1)
+			if grid[r][c - 1] != 1:
+				n not in visited and valid_nodes.append(n)
+		if c < self.maze.getDim() - 1:
+			n = (r, c + 1)
+			if grid[r][c + 1] != 1:
+				n not in visited and valid_nodes.append(n)
 
 		return valid_nodes
 
