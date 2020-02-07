@@ -4,7 +4,7 @@ import math
 import maze
 
 
-class AStarEuclid(object):
+class AStar(object):
 	def __init__(self, maze):
 		self.maze = maze
 		self.fringe = queue.PriorityQueue()
@@ -48,7 +48,6 @@ class AStarEuclid(object):
 				print(*i, sep=" ")
 			print("Max fringe size: " + str(maxFringe))
 			print("Took " + str((time.perf_counter() - startTime)) + " seconds")
-			#TODO print everything! yaay
 		else:
 			print('Could not find path using a* euclid for maze:')
 			self.maze.printGrid()
@@ -58,9 +57,9 @@ class AStarEuclid(object):
 	def makeOrderedPair(self, item):
 		return (self.heuristic(item), item)
 
-	# returns the result of the heuristic
+	# returns the result of the heuristic. Implemented in subclass
 	def heuristic(self, item:tuple) ->float:
-		return math.sqrt((item[0]-self.maze.getDim())**2 + (item[1]-self.maze.getDim())**2)
+		pass
 
 	# reused from dfs
 	def validNeighbors(self, item):
@@ -86,7 +85,4 @@ class AStarEuclid(object):
 			ret.append((i, j+1))
 		return ret
 
-if __name__=='__main__':
-	A = AStarEuclid(maze.Maze(10,.2))
-	A.search()
-	#TODO heurisitic needs to account for arrays being 0 indexed? i think.
+
