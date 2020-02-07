@@ -27,8 +27,6 @@ class BiDirectionalBFS:
 	def search(self) -> str or list:
 		while self.front_fringe and self.back_fringe:
 
-			print(self.front_fringe, self.back_fringe)
-
 			# do front and back DFS one branch at a time
 			f = self.bi_dry_helper(self.front_fringe, self.front_visited, self.back_visited, self.back_previous, self.front_previous)
 			b = self.bi_dry_helper(self.back_fringe, self.back_visited, self.front_visited, self.front_previous, self.back_previous)
@@ -55,7 +53,7 @@ class BiDirectionalBFS:
 			visited.add(c)
 			# if the current node has not been visited by the opp yet
 			# then get all the valid adjacent nodes
-			adjacent_nodes = self.find_valid_adjacent_nodes(c, visited)
+			adjacent_nodes = self.find_valid_adjacent_nodes(c, visited, prev, fringe)
 			# add them to the fringe
 			# then associate them with f in the previous dict
 			for n in adjacent_nodes:
@@ -65,7 +63,7 @@ class BiDirectionalBFS:
 
 			return None
 
-	def find_valid_adjacent_nodes(self, matrix_node: tuple, visited: set):
+	def find_valid_adjacent_nodes(self, matrix_node: tuple, visited: set, prev: dict, fringe: queue):
 
 		valid_nodes = queue()
 
@@ -79,53 +77,62 @@ class BiDirectionalBFS:
 		if r > 0:
 			n = (r - 1, c)
 			if grid[r - 1][c] != 1:
-				n not in visited and valid_nodes.append(n)
+				n not in visited and n not in prev and n not in fringe and valid_nodes.append(n)
 		if r < self.maze.getDim() - 1:
 			n = (r + 1, c)
 			if grid[r + 1][c] != 1:
-				n not in visited and valid_nodes.append(n)
+				n not in visited and n not in prev and n not in fringe and valid_nodes.append(n)
 		if c > 0:
 			n = (r, c - 1)
 			if grid[r][c - 1] != 1:
-				n not in visited and valid_nodes.append(n)
+				n not in visited and n not in prev and n not in fringe and valid_nodes.append(n)
 		if c < self.maze.getDim() - 1:
 			n = (r, c + 1)
 			if grid[r][c + 1] != 1:
-				n not in visited and valid_nodes.append(n)
+				n not in visited and n not in prev and n not in fringe and valid_nodes.append(n)
 
 		return valid_nodes
 
 	def generate_path_from(self, node: tuple):
 		# connect the two paths at the middle
-		f,b = node, node
+		f, b = node, node
 		f_path, b_path = [], []
 		m = self.maze.getGrid()
+
 		while True:
 			f_path.append(f)
-			if m[f[0]][f[1]] == 's':
+
+			if f == (0, 0):
 				break
+
 			f = self.front_previous[f]
 
 
 		while True:
 			b_path.append(b)
-			if m[b[0]][b[1]] == 'g':
+			if b == (self.maze.getDim() - 1, self.maze.getDim() - 1):
 				break
+
 			b = self.back_previous[b]
 
 		f_path.reverse()
 		# start b_path from 1 instead of 0 since they both contain same node
 		# we could also do f_path[:-1]
 		res = f_path + b_path[1:]
+
+		for cell in res:
+			self.maze.updateCell("#", cell[0], cell[1])
+
 		return res
 
 
 if __name__ == "__main__":
 
-	myM = maze.Maze(30, 0.1)
+	myM = maze.Maze(300, 0.3)
 	doB = BiDirectionalBFS(myM)
-	myM.printGrid()
+
 	print(doB.search())
+	myM.printGrid()
 
 
 
