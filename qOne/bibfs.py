@@ -24,77 +24,82 @@ class BiDirectionalBFS:
 		self.back_fringe = queue()
 		self.back_fringe.append(back)
 
-	def search(self) -> str:
+	def search(self) -> str or list:
 		while self.front_fringe and self.back_fringe:
-			# current front, back
-			f, b = self.front_fringe.popleft(), self.back_fringe.popleft()
 
-			# if the current front node that was taken off the front_fringe
-			# has already been visited by the back path
-			# then the front crossed the a path the back already explored
-			if f in self.back_visited:
-				# back bfs already crossed this path
-				return self.generate_path_from(f)
+			print(self.front_fringe, self.back_fringe)
 
-			else:
-				# if the current front node has not been visited by the back yet
-				# then get all the valid adjacent nodes
-				valid_nodes = self.find_valid_adjacent_nodes(f, self.front_visited)
-				# add them to the fringe
-				self.front_fringe += valid_nodes
-				# then associate them with f in the previous dict
-				for n in valid_nodes:
-					self.front_previous[n] = f
+			# do front and back DFS one branch at a time
+			f = self.bi_dry_helper(self.front_fringe, self.front_visited, self.back_visited, self.back_previous, self.front_previous)
+			b = self.bi_dry_helper(self.back_fringe, self.back_visited, self.front_visited, self.front_previous, self.back_previous)
 
-				self.front_visited.add(f)
+			if f is not None:
+				return f
+			elif b is not None:
+				return b
 
-			# if the current front node that was taken off the front_fringe
-			# has already been visited by the back path
-			# then the front crossed the a path the back already explored
-			if b in self.front_visited:
-				# front bfs already crossed this path
-				return self.generate_path_from(b)
-			else:
-				# if the current front node has not been visited by the back yet
-				# then get all the valid adjacent nodes
-				valid_nodes = self.find_valid_adjacent_nodes(b, self.back_visited)
-				# add them to the fringe
-				self.back_fringe += valid_nodes
-				# then associate them with f in the previous dict
-				for n in valid_nodes:
-					self.back_previous[n] = b
+		return "Failure"
 
-				self.back_visited.add(b)
+	def bi_dry_helper(self, fringe: queue, visited: set, opp_visited: set, opp_prev: dict, prev: dict) -> list or None:
+		c = fringe.popleft()
 
-		return "failure"
+		# if the current front node that was taken off the fringe
+		# has already been visited by the opposite path
+		# then this crossed the a path the opp already explored
+		if c in opp_visited or c in opp_prev:
+			# opp bfs already crossed this path
+			return self.generate_path_from(c)
+
+		else:
+			# mark curr node as visited
+			visited.add(c)
+			# if the current node has not been visited by the opp yet
+			# then get all the valid adjacent nodes
+			adjacent_nodes = self.find_valid_adjacent_nodes(c, visited)
+			# add them to the fringe
+			# then associate them with f in the previous dict
+			for n in adjacent_nodes:
+				if n not in visited:
+					fringe.append(n)
+					prev[n] = c
+
+			return None
 
 	def find_valid_adjacent_nodes(self, matrix_node: tuple, visited: set):
 
 		valid_nodes = queue()
 
-		r = matrix_node[0]
-		c = matrix_node[1]
+		row = matrix_node[0]
+		col = matrix_node[1]
 
 		grid = self.maze.getGrid()
 
 		# check if the adjacent nodes are within the bounds of the grid
 		# also check if the adjacent nodes aren't blocked off
-		if r > 0:
-			n = (r - 1, c)
-			if grid[r - 1][c] != 1:
-				n not in visited and valid_nodes.append(n)
-		if r < self.maze.getDim() - 1:
-			n = (r + 1, c)
-			if grid[r + 1][c] != 1:
-				n not in visited and valid_nodes.append(n)
-		if c > 0:
-			n = (r, c - 1)
-			if grid[r][c - 1] != 1:
-				n not in visited and valid_nodes.append(n)
-		if c < self.maze.getDim() - 1:
-			n = (r, c + 1)
-			if grid[r][c + 1] != 1:
-				n not in visited and valid_nodes.append(n)
+		possible_adjacent_cells = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
+
+		for cell in possible_adjacent_cells:
+			r = cell[0]
+			c = cell[1]
+
+			if row > 0 and :
+				if grid[r][c] != 1:
+					cell not in visited and valid_nodes.append(cell)
+			if row < self.maze.getDim() - 1:
+				n = (r + 1, c)
+				if grid[r + 1][c] != 1:
+					n not in visited and valid_nodes.append(n)
+			if col > 0:
+				n = (r, c - 1)
+				if grid[r][c - 1] != 1:
+					n not in visited and valid_nodes.append(n)
+			if col < self.maze.getDim() - 1:
+				n = (r, c + 1)
+				if grid[r][c + 1] != 1:
+					n not in visited and valid_nodes.append(n)
+
+
+
 
 		return valid_nodes
 
@@ -125,7 +130,7 @@ class BiDirectionalBFS:
 
 if __name__ == "__main__":
 
-	myM = maze.Maze(10, 0.1)
+	myM = maze.Maze(30, 0.1)
 	doB = BiDirectionalBFS(myM)
 	myM.printGrid()
 	print(doB.search())
