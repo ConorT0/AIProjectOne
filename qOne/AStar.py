@@ -10,10 +10,12 @@ class AStarEuclid(object):
 		self.fringe = queue.PriorityQueue()
 		# add items to fringe of pattern (priority_number, data)
 		self.prev = [[None for j in range(maze.getDim())] for i in range(maze.getDim())]
+		self.prev[0][0] = (0,0)
 
 	def search(self):
+		startTime = time.perf_counter()
 		goalComplete = False
-
+		maxFringe = 0
 		self.fringe.put(self.makeOrderedPair((0,0))) # start off the fringe
 		while not goalComplete and not self.fringe.empty():
 			item = self.fringe.get()[1]
@@ -24,18 +26,39 @@ class AStarEuclid(object):
 				for n in neighbors:
 					self.fringe.put(self.makeOrderedPair(n)) # add to fringe, will calculate distance.
 					self.prev[n[0]][n[1]] = item # update prev of the new thing in the fringe to be the calling node.
+				maxFringe = max(maxFringe, self.fringe.qsize())
 
 		if(goalComplete): # we found the goal
-			pass
+			grid = [row[:] for row in self.maze.getGrid()]
+			for ite in range(0, self.maze.getDim()):
+				for itj in range(0, self.maze.getDim()):
+					if (self.prev[ite][itj] is not None):
+						grid[ite][itj] = 'f'  # If any cell has a prev, that means it was on the fringe at some point. Mark the cell with an 'f'
+			backtrack = (len(grid)-1, len(grid)-1)
+			next = self.prev[backtrack[0]][backtrack[1]]
+			while (next != backtrack):
+				grid[backtrack[0]][backtrack[
+					1]] = '*'  # Starting from the goal node, look at the prev. continue until you hit the first node. Mark with stars.
+				backtrack = next
+				next = self.prev[backtrack[0]][backtrack[1]]
+			grid[-1][-1] = 'g'
+			grid[0][0] = 's'
+			print("Found Solution:")
+			for i in grid:
+				print(*i, sep=" ")
+			print("Max fringe size: " + str(maxFringe))
+			print("Took " + str((time.perf_counter() - startTime)) + " seconds")
 			#TODO print everything! yaay
 		else:
-			pass
-			#TODO failure oh noooo
+			print('Could not find path using a* euclid for maze:')
+			self.maze.printGrid()
+
 
 	# im lazy
 	def makeOrderedPair(self, item):
 		return (self.heuristic(item), item)
 
+	# returns the result of the heuristic
 	def heuristic(self, item:tuple) ->float:
 		return math.sqrt((item[0]-self.maze.getDim())**2 + (item[1]-self.maze.getDim())**2)
 
@@ -61,8 +84,9 @@ class AStarEuclid(object):
 		# to the right. If it is not outside of the maze, is a free spot, and has not been visited yet, we pass this check.
 		if j + 1 < len(grid) and (grid[i][j + 1] == 0 or grid[i][j + 1] == 'g') and self.prev[i][j + 1] is None:
 			ret.append((i, j+1))
+		return ret
 
 if __name__=='__main__':
 	A = AStarEuclid(maze.Maze(10,.2))
-	print(A.heuristic((10,10)))
+	A.search()
 	#TODO heurisitic needs to account for arrays being 0 indexed? i think.
