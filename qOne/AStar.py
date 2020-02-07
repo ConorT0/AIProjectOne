@@ -12,7 +12,29 @@ class AStarEuclid(object):
 		self.prev = [[None for j in range(maze.getDim())] for i in range(maze.getDim())]
 
 	def search(self):
-		pass
+		goalComplete = False
+
+		self.fringe.put(self.makeOrderedPair((0,0))) # start off the fringe
+		while not goalComplete and not self.fringe.empty():
+			item = self.fringe.get()[1]
+			if(item[0] == self.maze.getDim()-1 and item[1] == self.maze.getDim()-1):
+				goalComplete = True
+			else:
+				neighbors = self.validNeighbors(item)
+				for n in neighbors:
+					self.fringe.put(self.makeOrderedPair(n)) # add to fringe, will calculate distance.
+					self.prev[n[0]][n[1]] = item # update prev of the new thing in the fringe to be the calling node.
+
+		if(goalComplete): # we found the goal
+			pass
+			#TODO print everything! yaay
+		else:
+			pass
+			#TODO failure oh noooo
+
+	# im lazy
+	def makeOrderedPair(self, item):
+		return (self.heuristic(item), item)
 
 	def heuristic(self, item:tuple) ->float:
 		return math.sqrt((item[0]-self.maze.getDim())**2 + (item[1]-self.maze.getDim())**2)
@@ -41,6 +63,6 @@ class AStarEuclid(object):
 			ret.append((i, j+1))
 
 if __name__=='__main__':
-	A = AStarEuclid(qOne.maze.Maze(10,.2))
+	A = AStarEuclid(maze.Maze(10,.2))
 	print(A.heuristic((10,10)))
 	#TODO heurisitic needs to account for arrays being 0 indexed? i think.
