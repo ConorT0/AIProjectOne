@@ -10,6 +10,7 @@ class Bfs(object):
         self.bfs()
 
     def bfs(self):
+        path = []
         self.fringe.append((0, 0))  # add the starting point to the queue
         self.prev[0][0] = (0, 0)  # mark the starting point's previous as 0, 0 (for the path)
         while self.fringe:
@@ -20,11 +21,14 @@ class Bfs(object):
                 gridCopy = [row[:] for row in self.maze.getGrid()]  # make copy of grid
                 # using prev array, mark path with stars (not s or g)
                 next = self.prev[curr[0]][curr[1]]  # next tuple in path
+                path.append(next)
                 while next != (0, 0):
                     gridCopy[next[0]][next[1]] = '*'
                     next = self.prev[next[0]][next[1]]  # next tuple in path
+                    path.append(next)
                 print("gridcopy:")
-                printGridCopy(gridCopy)
+                print(*path)
+                #printGridCopy(gridCopy)
                 return
             neighbors = self.getValidNeighbors(curr)  # find all valid neighbors
             for n in neighbors:
@@ -72,7 +76,7 @@ def printGridCopy(grid):
 if __name__ == '__main__':
 
     # test getValidNeighbors
-    m = maze.Maze(4, 0.2)
+    m = maze.Maze(1000, 0.2)
     grid = m.getGrid()
     #m.printGrid()
     b = Bfs(m)
