@@ -27,8 +27,7 @@ class Bfs(object):
                     next = self.prev[next[0]][next[1]]  # next tuple in path
                     path.append(next)
                 print("gridcopy:")
-                print(*path)
-                #printGridCopy(gridCopy)
+                printGridCopy(gridCopy)
                 return
             neighbors = self.getValidNeighbors(curr)  # find all valid neighbors
             for n in neighbors:
