@@ -68,7 +68,9 @@ class Bfs(object):
 
 if __name__ == '__main__':
 
-    m = maze.Maze(100, 0.2)
+    m = maze.Maze(100, 0.1)
     b = Bfs(m)
-    m.print_with_temp_path(b.bfs())
+    path = b.bfs()
+    print(path)
+    m.print_with_temp_path(path)
 
