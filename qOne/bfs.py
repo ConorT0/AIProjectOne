@@ -32,6 +32,8 @@ class Bfs(object):
                     self.fringe.append(n)  # add all valid neighbors to queue
                     self.prev[n[0]][n[1]] = curr  # mark previous nodes
 
+        return None
+
 
     def getValidNeighbors(self, curr):
         result = []  # initialize list for neighbors
