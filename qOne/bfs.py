@@ -26,16 +26,16 @@ class Bfs(object):
                     gridCopy[next[0]][next[1]] = '*'
                     next = self.prev[next[0]][next[1]]  # next tuple in path
                     path.append(next)
-                print("gridcopy:")
-                print(*path)
-                #printGridCopy(gridCopy)
+                path.reverse()
+                self.maze.updatePath(path)
                 return
+
             neighbors = self.getValidNeighbors(curr)  # find all valid neighbors
             for n in neighbors:
                 self.fringe.append(n)  # add all valid neighbors to queue
                 self.prev[n[0]][n[1]] = curr  # mark previous nodes
         print("No solution found for: ")
-        self.maze.printGrid()
+        # self.maze.printGrid()
 
     def getValidNeighbors(self, curr):
         result = []  # initialize list for neighbors
@@ -76,11 +76,11 @@ def printGridCopy(grid):
 if __name__ == '__main__':
 
     # test getValidNeighbors
-    m = maze.Maze(1000, 0.2)
+    m = maze.Maze(100, 0.2)
     grid = m.getGrid()
     #m.printGrid()
     b = Bfs(m)
-    result = b.getValidNeighbors((1, 1))
-    #m.printGrid()
-    for item in result:
-        print(item)
+    # result = b.getValidNeighbors((1, 1))
+    m.printGrid()
+    # for item in result:
+    #     print(item)

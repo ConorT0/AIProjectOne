@@ -14,6 +14,7 @@ class Maze(object):
 		self.dim = dim  # size of the graph
 		self.grid = [[0 for x in range(dim)] for y in range(dim)] # Make a dim x dim grid
 		self.generateGrid()
+		self.path = list()
 
 	# create a dim x dim sized grid and fill with spaces based on given probability
 	def generateGrid(self) -> None:
@@ -37,10 +38,16 @@ class Maze(object):
 
 	# TODO: fill out what this method does
 	def updateFire(self):
+		temp = (0, 0)
+		self.updateCell('🔥', temp[0], temp[1])
 		pass
 
 	def updateCell(self, data: any, r: int, c: int):
 		self.grid[r][c] = data
+
+	def updatePath(self, path):
+		for cell in path:
+			self.updateCell("\x1b[6;30;42m#\x1b[0m", cell[0], cell[1])
 
 	def printGrid(self):
 		for i in self.grid:
