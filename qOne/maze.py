@@ -39,16 +39,17 @@ class Maze(object):
 	def updateCell(self, data: any, r: int, c: int):
 		self.grid[r][c] = data
 
-	def print_with_temp_path(self, path):
+	def print_with_temp_path(self, path) -> None:
 
-		if path == None:
+		if path == None or path == []:
 			print("\x1b[5;30;41mFailure\x1b[0m")
-		grid_copy = copy.deepcopy(self.grid)
-		for cell in path:
-			grid_copy[cell[0]][cell[1]] = "\x1b[6;30;42m#\x1b[0m"
-		print(grid_copy)
-		print("Path:", path)
+		else:
+			grid_copy = copy.deepcopy(self.grid)
+			for cell in path:
+				grid_copy[cell[0]][cell[1]] = "\x1b[6;30;42m#\x1b[0m"
+			print(grid_copy)
+			print("Path:", path)
 
-	def printGrid(self):
+	def printGrid(self) -> None:
 		for i in self.grid:
 			print(*i, sep=" ")
