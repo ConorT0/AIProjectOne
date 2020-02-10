@@ -9,7 +9,6 @@ class Dfs(object):
 		self.fringe =  collections.deque()
 		# make prev array
 		self.prev = [[None for j in range(maze.getDim())] for i in range(maze.getDim())]
-		self.search()
 
 	def search(self):
 		startTime = time.perf_counter ()
@@ -84,6 +83,8 @@ class Dfs(object):
 
 if __name__ == '__main__':
 
-	m = maze.Maze(100,.2)
-	d = Dfs(m)
+	m = maze.Maze(10,.2)
 
+	d = Dfs(m)
+	path = d.search()
+	m.print_with_temp_path(path)
