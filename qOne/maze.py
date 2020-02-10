@@ -4,12 +4,12 @@ The Maze class represents a single maze, of size nxn with probability weight p.
 """
 import random
 import collections
+import copy
 
 
 class Maze(object):
 
-	def __init__(self, dim: int, probability: float, fireProbability: float= None):
-		self.fireProbability = fireProbability
+	def __init__(self, dim: int, probability: float):
 		self.probability = probability
 		self.dim = dim  # size of the graph
 		self.grid = [[0 for x in range(dim)] for y in range(dim)] # Make a dim x dim grid
@@ -36,18 +36,18 @@ class Maze(object):
 	def getDim(self) -> int:
 		return self.dim
 
-	# TODO: fill out what this method does
-	def updateFire(self):
-		temp = (0, 0)
-		self.updateCell('🔥', temp[0], temp[1])
-		pass
-
 	def updateCell(self, data: any, r: int, c: int):
 		self.grid[r][c] = data
 
-	def updatePath(self, path):
+	def print_with_temp_path(self, path):
+
+		if path == None:
+			print("\x1b[5;30;41mFailure\x1b[0m")
+		grid_copy = copy.deepcopy(self.grid)
 		for cell in path:
-			self.updateCell("\x1b[6;30;42m#\x1b[0m", cell[0], cell[1])
+			grid_copy[cell[0]][cell[1]] = "\x1b[6;30;42m#\x1b[0m"
+		print(grid_copy)
+		print("Path:", path)
 
 	def printGrid(self):
 		for i in self.grid:
