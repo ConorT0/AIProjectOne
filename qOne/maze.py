@@ -39,6 +39,9 @@ class Maze(object):
 	def updateFire(self):
 		pass
 
+	def updateCell(self, data: any, r: int, c: int):
+		self.grid[r][c] = data
+
 	def printGrid(self):
 		for i in self.grid:
 			print(*i, sep=" ")

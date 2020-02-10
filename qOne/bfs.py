@@ -10,13 +10,25 @@ class Bfs(object):
         self.bfs()
 
     def bfs(self):
+        path = []
         self.fringe.append((0, 0))  # add the starting point to the queue
         self.prev[0][0] = (0, 0)  # mark the starting point's previous as 0, 0 (for the path)
         while self.fringe:
             curr = self.fringe.popleft()  # remove first item in queue
             # if goal reached
             if curr == (self.maze.getDim() - 1, self.maze.getDim() - 1):
-                print("Path found") # trace back path and print
+                print("Path found")  # trace back path and print
+                gridCopy = [row[:] for row in self.maze.getGrid()]  # make copy of grid
+                # using prev array, mark path with stars (not s or g)
+                next = self.prev[curr[0]][curr[1]]  # next tuple in path
+                path.append(next)
+                while next != (0, 0):
+                    gridCopy[next[0]][next[1]] = '*'
+                    next = self.prev[next[0]][next[1]]  # next tuple in path
+                    path.append(next)
+                print("gridcopy:")
+                print(*path)
+                #printGridCopy(gridCopy)
                 return
             neighbors = self.getValidNeighbors(curr)  # find all valid neighbors
             for n in neighbors:
@@ -36,22 +48,39 @@ class Bfs(object):
 
         # up: i - 1
 
-        if i - 1 > -1 and grid[i - 1][j] == 0 and self.prev[i - 1][j] is None:
+        if i - 1 > -1 and (grid[i - 1][j] == 0 or grid[i - 1][j] == 'g') and self.prev[i - 1][j] is None:
             result.append((i - 1, j))
 
         # down: i + 1
 
-        if i + 1 < len(grid) and grid[i + 1][j] == 0 and self.prev[i + 1][j] is None:
+        if i + 1 < len(grid) and (grid[i + 1][j] == 0 or grid[i + 1][j] == 'g') and self.prev[i + 1][j] is None:
             result.append((i + 1, j))
 
         # left: j - 1
 
-        if j - 1 > -1 and grid[i][j - 1] == 0 and self.prev[i][j - 1] is None:
+        if j - 1 > -1 and (grid[i][j - 1] == 0 or grid[i][j - 1] == 'g') and self.prev[i][j - 1] is None:
             result.append((i, j - 1))
 
         # right: j + 1
 
-        if j + 1 < len(grid) and grid[i][j + 1] == 0 and self.prev[i][j + 1] is None:
+        if j + 1 < len(grid) and (grid[i][j + 1] == 0 or grid[i][j + 1] == 'g') and self.prev[i][j + 1] is None:
             result.append((i, j + 1))
 
         return result
+
+
+def printGridCopy(grid):
+    for i in grid:
+        print(*i, sep=" ")
+
+if __name__ == '__main__':
+
+    # test getValidNeighbors
+    m = maze.Maze(1000, 0.2)
+    grid = m.getGrid()
+    #m.printGrid()
+    b = Bfs(m)
+    result = b.getValidNeighbors((1, 1))
+    #m.printGrid()
+    for item in result:
+        print(item)
