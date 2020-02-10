@@ -26,6 +26,7 @@ class Bfs(object):
                     gridCopy[next[0]][next[1]] = '*'
                     next = self.prev[next[0]][next[1]]  # next tuple in path
                     path.append(next)
+
                 path.reverse()
                 self.maze.updatePath(path)
                 return
