@@ -29,12 +29,12 @@ class AStar(object):
 				maxFringe = max(maxFringe, self.fringe.qsize())
 
 		if(goalComplete): # we found the goal
-			grid = [row[:] for row in self.maze.getGrid()]
-			for ite in range(0, self.maze.getDim()):
-				for itj in range(0, self.maze.getDim()):
-					if (self.prev[ite][itj] is not None):
-						grid[ite][itj] = 'f'  # If any cell has a prev, that means it was on the fringe at some point. Mark the cell with an 'f'
-			backtrack = (len(grid)-1, len(grid)-1)
+			#grid = [row[:] for row in self.maze.getGrid()]
+			#for ite in range(0, self.maze.getDim()):
+			#	for itj in range(0, self.maze.getDim()):
+			#		if (self.prev[ite][itj] is not None):
+			#			grid[ite][itj] = 'f'  # If any cell has a prev, that means it was on the fringe at some point. Mark the cell with an 'f'
+			backtrack = (len(self.maze.getGrid())-1, len(self.maze.getGrid())-1)
 			next = self.prev[backtrack[0]][backtrack[1]]
 			path = []
 			while (next != backtrack):
@@ -43,8 +43,8 @@ class AStar(object):
 				#	1]] = '*'  # Starting from the goal node, look at the prev. continue until you hit the first node. Mark with stars.
 				backtrack = next
 				next = self.prev[backtrack[0]][backtrack[1]]
-			grid[-1][-1] = 'g'
-			grid[0][0] = 's'
+			#grid[-1][-1] = 'g'
+			#grid[0][0] = 's'
 			print("Found Solution:")
 			#self.maze.updatePath(path)
 			#self.maze.printGrid()
