@@ -9,5 +9,7 @@ class AStarManhatten(AStar.AStar):
 		return abs(item[0] - self.maze.getDim()) + abs(item[1] - self.maze.getDim())
 
 if __name__=='__main__':
-	A = AStarManhatten(maze.Maze(10,.2))
-	A.search()
+	m = maze.Maze(100,.2)
+	A = AStarManhatten(m)
+	path = A.search()
+	m.print_with_temp_path(path)
