@@ -36,8 +36,8 @@ class Dfs(object):
 						next = self.prev[backtrack[0]][backtrack[1]]
 					grid[-1][-1] = 'g'
 					print("Found Solution:")
-					for i in grid:
-						print(*i, sep=" ")
+					#for i in grid:
+					#	print(*i, sep=" ")
 					print("Max fringe size: " + str(maxFringe))
 					print("Took " +str((time.perf_counter () - startTime))+" seconds")
 					return
@@ -46,7 +46,7 @@ class Dfs(object):
 					self.prev[i[0]][i[1]] = item # make valid neighbor's prev value the current node.
 			maxFringe = max(maxFringe,len(self.fringe))
 		print("No solution found for:")
-		self.maze.printGrid()
+		#self.maze.printGrid()
 		print("Max fringe size: " + str(maxFringe))
 		print("Took " + str((time.perf_counter () - startTime)) + " seconds")
 
@@ -82,6 +82,6 @@ class Dfs(object):
 
 if __name__ == '__main__':
 
-	m = maze.Maze(100,.1)
+	m = maze.Maze(2000,.2)
 	d = Dfs(m)
 

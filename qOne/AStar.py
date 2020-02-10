@@ -44,13 +44,13 @@ class AStar(object):
 			grid[-1][-1] = 'g'
 			grid[0][0] = 's'
 			print("Found Solution:")
-			for i in grid:
-				print(*i, sep=" ")
+			#for i in grid:
+			#	print(*i, sep=" ")
 			print("Max fringe size: " + str(maxFringe))
 			print("Took " + str((time.perf_counter() - startTime)) + " seconds")
 		else:
 			print('Could not find path using a* euclid for maze:')
-			self.maze.printGrid()
+			#self.maze.printGrid()
 
 
 	# im lazy
