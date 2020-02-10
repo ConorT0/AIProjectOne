@@ -7,9 +7,8 @@ class Bfs(object):
         self.maze = maze
         self.fringe = collections.deque()
         self.prev = [[None for j in range(maze.getDim())] for i in range(maze.getDim())]
-        self.bfs()
 
-    def bfs(self):
+    def bfs(self) -> list:
         path = []
         self.fringe.append((0, 0))  # add the starting point to the queue
         self.prev[0][0] = (0, 0)  # mark the starting point's previous as 0, 0 (for the path)
@@ -26,13 +25,12 @@ class Bfs(object):
 
                 path.reverse()
                 return path
+
             else:
                 neighbors = self.getValidNeighbors(curr)  # find all valid neighbors
                 for n in neighbors:
                     self.fringe.append(n)  # add all valid neighbors to queue
                     self.prev[n[0]][n[1]] = curr  # mark previous nodes
-
-        return None
 
 
     def getValidNeighbors(self, curr):
@@ -68,9 +66,8 @@ class Bfs(object):
 
 if __name__ == '__main__':
 
-    m = maze.Maze(100, 0.1)
+    m = maze.Maze(100, 0)
     b = Bfs(m)
     path = b.bfs()
-    print(path)
     m.print_with_temp_path(path)
 
