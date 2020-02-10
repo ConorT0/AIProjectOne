@@ -120,8 +120,6 @@ class BiDirectionalBFS:
 		# we could also do f_path[:-1]
 		res = f_path + b_path[1:]
 
-		self.maze.updatePath(res)
-
 		return res
 
 
