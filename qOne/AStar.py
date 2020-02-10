@@ -36,20 +36,25 @@ class AStar(object):
 						grid[ite][itj] = 'f'  # If any cell has a prev, that means it was on the fringe at some point. Mark the cell with an 'f'
 			backtrack = (len(grid)-1, len(grid)-1)
 			next = self.prev[backtrack[0]][backtrack[1]]
+			path = []
 			while (next != backtrack):
-				grid[backtrack[0]][backtrack[
-					1]] = '*'  # Starting from the goal node, look at the prev. continue until you hit the first node. Mark with stars.
+				path.append(backtrack)
+				#grid[backtrack[0]][backtrack[
+				#	1]] = '*'  # Starting from the goal node, look at the prev. continue until you hit the first node. Mark with stars.
 				backtrack = next
 				next = self.prev[backtrack[0]][backtrack[1]]
 			grid[-1][-1] = 'g'
 			grid[0][0] = 's'
 			print("Found Solution:")
-			for i in grid:
-				print(*i, sep=" ")
+			#self.maze.updatePath(path)
+			#self.maze.printGrid()
+			#for i in grid:
+			#	print(*i, sep=" ")
 			print("Max fringe size: " + str(maxFringe))
 			print("Took " + str((time.perf_counter() - startTime)) + " seconds")
+			return path
 		else:
-			print('Could not find path using a* euclid for maze:')
+			print('Could not find path using a* for maze:')
 			self.maze.printGrid()
 
 
