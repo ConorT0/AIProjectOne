@@ -32,11 +32,11 @@ class BiDirectionalBFS:
 			b = self.bi_dry_helper(self.back_fringe, self.back_visited, self.front_visited, self.front_previous, self.back_previous)
 
 			if f is not None:
-				return f
+				return self.generate_path_from(f)
 			elif b is not None:
-				return b
+				return self.generate_path_from(b)
 
-		return "Failure"
+		return "\x1b[5;30;41mFailure\x1b[0m"
 
 	def bi_dry_helper(self, fringe: queue, visited: set, opp_visited: set, opp_prev: dict, prev: dict) -> list or None:
 		c = fringe.popleft()
@@ -46,7 +46,7 @@ class BiDirectionalBFS:
 		# then this crossed the a path the opp already explored
 		if c in opp_visited or c in opp_prev:
 			# opp bfs already crossed this path
-			return self.generate_path_from(c)
+			return c
 
 		else:
 			# mark curr node as visited
@@ -61,7 +61,7 @@ class BiDirectionalBFS:
 					fringe.append(n)
 					prev[n] = c
 
-			return None
+		return None
 
 	def find_valid_adjacent_nodes(self, matrix_node: tuple, visited: set, prev: dict, fringe: queue):
 
@@ -120,18 +120,17 @@ class BiDirectionalBFS:
 		# we could also do f_path[:-1]
 		res = f_path + b_path[1:]
 
-		for cell in res:
-			self.maze.updateCell("#", cell[0], cell[1])
+		self.maze.updatePath(res)
 
 		return res
 
 
 if __name__ == "__main__":
 
-	myM = maze.Maze(300, 0.3)
+	myM = maze.Maze(100, 0.1)
 	doB = BiDirectionalBFS(myM)
 
-	print(doB.search())
+	print("Path:", doB.search())
 	myM.printGrid()
 
 
