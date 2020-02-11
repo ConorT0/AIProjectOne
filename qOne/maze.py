@@ -47,8 +47,12 @@ class Maze(object):
 			grid_copy = copy.deepcopy(self.grid)
 			for cell in path:
 				grid_copy[cell[0]][cell[1]] = "\x1b[6;30;42m#\x1b[0m"
-			for i in grid_copy:
-				print(*i, sep=" ")
+
+			grid_copy[0][0] = 's'
+			grid_copy[-1][-1] = 'g'
+
+			for row in grid_copy:
+				print(*row, sep=" ")
 			print("Path:", path)
 
 	def printGrid(self) -> None:
