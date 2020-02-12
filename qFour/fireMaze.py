@@ -9,7 +9,6 @@ class FireMaze(maze.Maze):
 		# we don't want the first cell, and we don't want the last cell (dim - 1 is the last cell)
 		# randomly pick a cell to initially set on fire
 		self.updateCell('🔥', random.randint(1, self.dim - 2), random.randint(1, self.dim - 2))
-		#self.updateCell('🔥', 1,1)
 
 	# given a cell, find all the neighbors that are on fire
 	def count_on_fire_neighbors(self, cell: tuple) -> int:

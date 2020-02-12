@@ -58,3 +58,6 @@ class Maze(object):
 	def printGrid(self) -> None:
 		for i in self.grid:
 			print(*i, sep=" ")
+
+	def clear_grid(self):
+		self.grid = [[0 for x in range(self.dim)] for y in range(self.dim)]

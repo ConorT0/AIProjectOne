@@ -8,7 +8,7 @@ class Bfs(object):
         self.fringe = collections.deque()
         self.prev = [[None for j in range(maze.getDim())] for i in range(maze.getDim())]
 
-    def bfs(self) -> list:
+    def search(self) -> list:
         path = []
         self.fringe.append((0, 0))  # add the starting point to the queue
         self.prev[0][0] = (0, 0)  # mark the starting point's previous as 0, 0 (for the path)

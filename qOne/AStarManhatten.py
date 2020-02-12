@@ -1,4 +1,4 @@
-import AStar
+from qOne import AStar
 import maze
 
 class AStarManhatten(AStar.AStar):
