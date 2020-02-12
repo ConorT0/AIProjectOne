@@ -77,7 +77,7 @@ def printGridCopy(grid):
 if __name__ == '__main__':
 
     # test getValidNeighbors
-    m = maze.Maze(100, 0.2)
+    m = maze.Maze(10, 0.2)
     grid = m.getGrid()
     #m.printGrid()
     b = Bfs(m)
