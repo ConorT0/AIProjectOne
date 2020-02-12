@@ -9,7 +9,6 @@ class Dfs(object):
 		self.fringe =  collections.deque()
 		# make prev array
 		self.prev = [[None for j in range(maze.getDim())] for i in range(maze.getDim())]
-		self.search()
 
 	def search(self):
 		startTime = time.perf_counter ()
@@ -18,29 +17,31 @@ class Dfs(object):
 		maxFringe = 1
 		#use pop() to get item from queue
 		while(self.fringe): # This checks if the dequeue is empty? python is such a mystical language...
-			item = self.fringe.pop() # remove
+			item = self.fringe.pop()  # remove
 			for i in self.validNeighbors(item): # get all valid neighbors,
 				if(self.maze.getGrid()[i[0]][i[1]] == 'g'):#if the neighbor is the goal
-					grid = [row[:] for row in self.maze.getGrid()]
-					for ite in range(0,self.maze.getDim()):
-						for itj in range(0,self.maze.getDim()):
-							if(self.prev[ite][itj] is not None):
-								grid[ite][itj] = 'f' # If any cell has a prev, that means it was on the fringe at some point. Mark the cell with an 'f'
+					#grid = [row[:] for row in self.maze.getGrid()]
+					#for ite in range(0,self.maze.getDim()):
+					#	for itj in range(0,self.maze.getDim()):
+					#		if(self.prev[ite][itj] is not None):
+					#			grid[ite][itj] = 'f' # If any cell has a prev, that means it was on the fringe at some point. Mark the cell with an 'f'
 
 					backtrack = i
 					next = item
-					while(next!=backtrack):
+					path = []
 
-						grid[backtrack[0]][backtrack[1]] = '*' # Starting from the goal node, look at the prev. continue until you hit the first node. Mark with stars.
+					while(next!=backtrack):
+						path.append(backtrack)
+						#grid[backtrack[0]][backtrack[1]] = '*' # Starting from the goal node, look at the prev. continue until you hit the first node. Mark with stars.
 						backtrack = next
 						next = self.prev[backtrack[0]][backtrack[1]]
-					grid[-1][-1] = 'g'
+					#grid[-1][-1] = 'g'
 					print("Found Solution:")
-					for i in grid:
-						print(*i, sep=" ")
+					#self.maze.updatePath(path)
+					#self.maze.printGrid()
 					print("Max fringe size: " + str(maxFringe))
 					print("Took " +str((time.perf_counter () - startTime))+" seconds")
-					return
+					return path
 				else:
 					self.fringe.append(i) # add valid neighbor to fringe
 					self.prev[i[0]][i[1]] = item # make valid neighbor's prev value the current node.
@@ -82,6 +83,8 @@ class Dfs(object):
 
 if __name__ == '__main__':
 
-	m = maze.Maze(100,.1)
-	d = Dfs(m)
+	m = maze.Maze(10,.2)
 
+	d = Dfs(m)
+	path = d.search()
+	m.print_with_temp_path(path)

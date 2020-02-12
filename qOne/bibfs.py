@@ -36,7 +36,7 @@ class BiDirectionalBFS:
 			elif b is not None:
 				return self.generate_path_from(b)
 
-		return "\x1b[5;30;41mFailure\x1b[0m"
+		return None
 
 	def bi_dry_helper(self, fringe: queue, visited: set, opp_visited: set, opp_prev: dict, prev: dict) -> list or None:
 		c = fringe.popleft()
@@ -120,8 +120,6 @@ class BiDirectionalBFS:
 		# we could also do f_path[:-1]
 		res = f_path + b_path[1:]
 
-		self.maze.updatePath(res)
-
 		return res
 
 
@@ -130,8 +128,7 @@ if __name__ == "__main__":
 	myM = maze.Maze(100, 0.1)
 	doB = BiDirectionalBFS(myM)
 
-	print("Path:", doB.search())
-	myM.printGrid()
+	myM.print_with_temp_path(doB.search())
 
 
 
