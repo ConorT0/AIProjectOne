@@ -1,4 +1,4 @@
-import maze
+import qOne.maze as maze
 import random
 
 class FireMaze(maze.Maze):
@@ -40,11 +40,12 @@ class FireMaze(maze.Maze):
 		# create a list that will contain all the cells that are now caught on fire
 		cells_caught_on_fire = list()
 		for r in range(0, len(self.getGrid())):
-			for c in range(0, r):
-				k = self.count_on_fire_neighbors((r, c))
-				cell_probability = 1 - pow((1 - self.fireProbability), k)
-				if random.uniform(0, 1) <= cell_probability:
-					cells_caught_on_fire.append((r, c))
+			for c in range(0, len(self.getGrid()[0])):
+				if(self.grid[r][c]!= '🔥'):
+					k = self.count_on_fire_neighbors((r, c))
+					cell_probability = 1 - pow((1 - self.fireProbability), k)
+					if random.uniform(0, 1) <= cell_probability:
+						cells_caught_on_fire.append((r, c))
 
 		# update the grid with the new cells
 		# we have to do this separately
