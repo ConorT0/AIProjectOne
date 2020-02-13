@@ -16,3 +16,9 @@ class mazeEnhancer(object):
 			print("Supplied maze has no solution")
 			self.unsolvable = True
 
+	def getNeighbors(self) -> [maze]:
+		pass
+
+
+
+
