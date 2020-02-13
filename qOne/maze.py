@@ -70,38 +70,6 @@ class Maze(object):
 
 			return out
 
-	def get_html_grid_with_temp_path(self, path) -> str:
-		out = str()
-		if path == None or path == []:
-			return "<span color=\"white\" background-color=\"#d64161\">Failure ☠</span>"
-		else:
-			out += """<style>.cell {
-			width: 15px;
-			display: inline-block;
-			border: 5px solid red;
-			}</style>
-			"""
-			out += "<div class=\"maze\">"
-			grid_copy = copy.deepcopy(self.grid)
-			for cell in path:
-				grid_copy[cell[0]][cell[1]] = "<div class=\"cell\" style=\"color: white; background-color:#82b74b\">💃</div>"
-
-			grid_copy[0][0] = '<div class=\"cell\">😊</div>'
-			grid_copy[-1][-1] = '<div class=\"cell\">🏁</div>'
-
-			for row in grid_copy:
-				for cell in row:
-					if str(cell) == "0":
-						tmp_cell = "<div class=\"cell\">&nbsp;</div>"
-					elif str(cell) == "1":
-						tmp_cell = "<div class=\"cell\">🛑</div>"
-					else:
-						tmp_cell = str(cell)
-					out += "<div class=\"cell\">&nbsp;</div>" + tmp_cell
-				out += "<br/>"
-			out+="</div>"
-			return out
-
 	def print_with_temp_path(self, path) -> None:
 		print(self.get_grid_with_temp_path(path))
 
