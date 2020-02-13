@@ -50,7 +50,7 @@ if __name__ == "__main__":
 		plt.yticks([])  # remove the tick marks by setting to an empty list
 		plt.axes().invert_yaxis()  # invert the y-axis so the first row of data is at the top
 
-		plt.show()
+		plt.savefig("bulletTwo/"+algo_name+".png")
 
 		plt.clf()
 		plt.cla()

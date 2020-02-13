@@ -6,7 +6,6 @@ import random
 import collections
 import copy
 
-
 class Maze(object):
 
 	def __init__(self, dim: int, probability: float):

@@ -1,9 +1,9 @@
 # perform a bi-directional BFS on the grid
 from collections import deque as queue
 import qOne.maze as maze
+import qOne.algo as algo
 
-
-class BiDirectionalBFS:
+class BiDirectionalBFS(algo.SearchAlgo):
 
 	def __init__(self, m: maze.Maze):
 		self.maze = m

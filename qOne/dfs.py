@@ -1,9 +1,9 @@
 import collections
 import time
 import qOne.maze as maze
+import qOne.algo as algo
 
-
-class Dfs(object):
+class Dfs(algo.SearchAlgo):
 	def __init__(self, maze):
 		self.maze = maze
 		self.fringe =  collections.deque()

@@ -2,9 +2,10 @@ import time
 import queue
 import math
 import qOne.maze as maze
+import qOne.algo as algo
 
 
-class AStar(object):
+class AStar(algo.SearchAlgo):
 	def __init__(self, maze):
 		self.maze = maze
 		self.fringe = queue.PriorityQueue()

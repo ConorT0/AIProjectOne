@@ -1,8 +1,8 @@
 import collections
 import qOne.maze
+import qOne.algo as algo
 
-
-class Bfs(object):
+class Bfs(algo.SearchAlgo):
     def __init__(self, maze):  # takes in maze object
         self.maze = maze
         self.fringe = collections.deque()
