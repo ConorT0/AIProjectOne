@@ -6,7 +6,7 @@ import random
 import collections
 import copy
 
-0
+
 class Maze(object):
 
 	def __init__(self, dim: int, probability: float):
@@ -39,10 +39,23 @@ class Maze(object):
 	def updateCell(self, data: any, r: int, c: int):
 		self.grid[r][c] = data
 
-	def print_with_temp_path(self, path) -> None:
-
+	def get_grid_int_matrix_with_temp_path(self, path) -> list:
 		if path == None or path == []:
-			print("\x1b[5;30;41mFailure\x1b[0m")
+			return None
+		else:
+			grid_copy = copy.deepcopy(self.grid)
+			for cell in path:
+				grid_copy[cell[0]][cell[1]] = 2
+
+			grid_copy[0][0] = 3
+			grid_copy[-1][-1] = 4
+
+			return grid_copy
+
+	def get_grid_with_temp_path(self, path) -> str:
+		out = str()
+		if path == None or path == []:
+			return "\x1b[5;30;41mFailure\x1b[0m"
 		else:
 			grid_copy = copy.deepcopy(self.grid)
 			for cell in path:
@@ -52,8 +65,46 @@ class Maze(object):
 			grid_copy[-1][-1] = 'g'
 
 			for row in grid_copy:
-				print(*row, sep=" ")
-			print("Path:", path)
+				for cell in row:
+					out += " " + str(cell)
+				out += "\n"
+
+			return out
+
+	def get_html_grid_with_temp_path(self, path) -> str:
+		out = str()
+		if path == None or path == []:
+			return "<span color=\"white\" background-color=\"#d64161\">Failure ☠</span>"
+		else:
+			out += """<style>.cell {
+			width: 15px;
+			display: inline-block;
+			border: 5px solid red;
+			}</style>
+			"""
+			out += "<div class=\"maze\">"
+			grid_copy = copy.deepcopy(self.grid)
+			for cell in path:
+				grid_copy[cell[0]][cell[1]] = "<div class=\"cell\" style=\"color: white; background-color:#82b74b\">💃</div>"
+
+			grid_copy[0][0] = '<div class=\"cell\">😊</div>'
+			grid_copy[-1][-1] = '<div class=\"cell\">🏁</div>'
+
+			for row in grid_copy:
+				for cell in row:
+					if str(cell) == "0":
+						tmp_cell = "<div class=\"cell\">&nbsp;</div>"
+					elif str(cell) == "1":
+						tmp_cell = "<div class=\"cell\">🛑</div>"
+					else:
+						tmp_cell = str(cell)
+					out += "<div class=\"cell\">&nbsp;</div>" + tmp_cell
+				out += "<br/>"
+			out+="</div>"
+			return out
+
+	def print_with_temp_path(self, path) -> None:
+		print(self.get_grid_with_temp_path(path))
 
 	def printGrid(self) -> None:
 		for i in self.grid:
@@ -61,3 +112,11 @@ class Maze(object):
 
 	def clear_grid(self):
 		self.grid = [[0 for x in range(self.dim)] for y in range(self.dim)]
+
+if __name__ == "__main__":
+	import maze
+	import bibfs
+	myM = maze.Maze(100, 0.1)
+	doB = bibfs.BiDirectionalBFS(myM)
+
+	myM.print_with_temp_path(doB.search())
