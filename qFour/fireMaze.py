@@ -1,14 +1,14 @@
 import qOne.maze as maze
 import random
+from qOne import bibfs
 
 class FireMaze(maze.Maze):
 	def __init__(self, dim: int, maze_probability: float, fireProbability: float):
 		super(FireMaze, self).__init__(dim, maze_probability)
 		self.fireProbability = fireProbability
 
-		# we don't want the first cell, and we don't want the last cell (dim - 1 is the last cell)
-		# randomly pick a cell to initially set on fire
-		self.updateCell('🔥', random.randint(1, self.dim - 2), random.randint(1, self.dim - 2))
+		# ensure start cell has valid path to initial fire cell
+		self.gen_fire_start()
 
 	# given a cell, find all the neighbors that are on fire
 	def count_on_fire_neighbors(self, cell: tuple) -> int:
@@ -50,6 +50,21 @@ class FireMaze(maze.Maze):
 		# we have to do this separately
 		for cell in cells_caught_on_fire:
 			self.updateCell('🔥', cell[0], cell[1])
+
+	def gen_fire_start(self):
+		# we don't want the first cell, and we don't want the last cell (dim - 1 is the last cell)
+		# randomly pick a cell to initially set on fire
+		r = random.randint(1, self.dim - 2)
+		c = random.randint(1, self.dim - 2)
+		# check that (0,0) has a path to (r,c)
+		while True:
+
+			if bibfs.BiDirectionalBFS(self, (0, 0), (r, c)).search() is not None:
+				self.updateCell('🔥', r, c)
+				break
+			else:
+				self.clear_grid()
+				self.generateGrid()
 
 if __name__ == '__main__':
 	test = FireMaze(10, 0.1, 1)

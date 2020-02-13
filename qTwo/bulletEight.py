@@ -1,9 +1,11 @@
 from qOne import bibfs
+from qOne import AStarManhatten
 from qOne import maze
 
 
 if __name__ == "__main__":
 	m = maze.Maze(100, 0.2)
+	astar = AStarManhatten.AStarManhatten(m)
 	bdbfs = bibfs.BiDirectionalBFS(m)
 
 	astar_path = astar.search()
