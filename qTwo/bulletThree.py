@@ -20,24 +20,24 @@ class findSolveability(object):
 
 	def runTest(self):
 		self.p = 0
-		while self.p < self.maxP:
+		while self.p < self.maxP: # loop over p values, step up by predefined amount
 			solvedMazes = 0
-			for x in range(0, self.mazePerP):
+			for x in range(0, self.mazePerP): # make this number of mazes
 				m = maze.Maze(self.dim,self.p)
 				d = dfs.Dfs(m)
-				result = d.search()
-				if(result is not None):
+				result = d.search() # run dfs
+				if(result is not None): # add one to counter for each solved maze
 					solvedMazes += 1
-			self.ploty.append(solvedMazes / self.mazePerP)
+			self.ploty.append(solvedMazes / self.mazePerP) # divide number of solvable mazes by total number of mazes generated.
 			self.p += self.step
 
 		self.ploty = np.array(self.ploty)
 		print(self.plotx)
 		print(self.ploty)
-		plt.title("p value VS. Maze solvability for graph of size " + str(self.dim))
-		plt.xlabel("p value")
-		plt.ylabel("solvability")
-		plt.plot(self.plotx,self.ploty)
+		plt.title("Density VS. Maze solvability for graph of size " + str(self.dim))
+		plt.xlabel("Density")
+		plt.ylabel("Solvability")
+		plt.plot(self.plotx,self.ploty) # plot using pyplot
 
 		plt.show()
 
