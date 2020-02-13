@@ -20,19 +20,20 @@ if __name__ == "__main__":
 	}
 
 	# run for each maze
+	m = maze.Maze(MAZE_SIZE, 0.2)
+
 	for algo_name, algo in algos_map.items():
 
-		path = None
-		m = None
+		a = algo(m)
+		path = a.search()
 
 		while True:
-
-			m = maze.Maze(MAZE_SIZE, 0.2)
-			a = algo(m)
-			path = a.search()
 			if path is not None:
-
 				break
+			else:
+				m.clear_grid()
+				m.generateGrid()
+				path = a.search()
 
 		m.gen_and_save_graphs_with_temp_path(path, "bulletTwo", algo_name + ".png", algo_name)
 

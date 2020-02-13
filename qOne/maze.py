@@ -73,7 +73,7 @@ class Maze(object):
 
 			return out
 
-	def gen_and_save_graphs_with_temp_path(self, path: list, save_path: str = "./", fname: str = "unnamed.png", graph_title: str = "Un-named Graph"):
+	def gen_and_save_graphs_with_temp_path(self, path: list, save_path: str = "./", fname: str = "unnamed.png", graph_title: str = "Un-named Graph") -> None:
 		grid_copy = copy.deepcopy(self.get_grid_int_matrix_with_temp_path(path))
 
 		grid_copy = np.pad(grid_copy, pad_width=1, mode='constant', constant_values=5)
@@ -88,7 +88,11 @@ class Maze(object):
 		plt.yticks([])  # remove the tick marks by setting to an empty list
 		plt.axes().invert_yaxis()  # invert the y-axis so the first row of data is at the top
 
-		plt.savefig(os.path.join(save_path, fname))
+		plt.savefig(os.path.join(save_path, fname), dpi = 300, bbox_inches='tight')
+
+		plt.cla()
+		plt.clf()
+		plt.close()
 
 	def print_with_temp_path(self, path) -> None:
 		print(self.get_grid_with_temp_path(path))
