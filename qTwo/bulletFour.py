@@ -3,7 +3,8 @@ from matplotlib import pyplot as plt
 import qOne.maze as maze
 import qOne.AStarManhatten as AStarManhatten
 
-class findSolveability(object):
+
+class findPathLength(object):
 	def __init__(self):
 		self.dim = 100
 		self.step = .03

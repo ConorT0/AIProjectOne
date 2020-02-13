@@ -8,6 +8,8 @@ class AStar(object):
 	def __init__(self, maze):
 		self.maze = maze
 		self.fringe = queue.PriorityQueue()
+		self.maxFringe = -1
+		self.nodesExplored = -1
 		# add items to fringe of pattern (priority_number, data)
 		self.prev = [[None for j in range(maze.getDim())] for i in range(maze.getDim())]
 		self.prev[0][0] = (0,0)
@@ -15,10 +17,12 @@ class AStar(object):
 	def search(self):
 		startTime = time.perf_counter()
 		goalComplete = False
-		maxFringe = 0
+		self.maxFringe = 0
+		self.nodesExplored = 0
 		self.fringe.put(self.makeOrderedPair((0,0))) # start off the fringe
 		while not goalComplete and not self.fringe.empty():
 			item = self.fringe.get()[1]
+			self.nodesExplored +=1
 			if(item[0] == self.maze.getDim()-1 and item[1] == self.maze.getDim()-1):
 				goalComplete = True
 			else:
@@ -26,7 +30,7 @@ class AStar(object):
 				for n in neighbors:
 					self.fringe.put(self.makeOrderedPair(n)) # add to fringe, will calculate distance.
 					self.prev[n[0]][n[1]] = item # update prev of the new thing in the fringe to be the calling node.
-				maxFringe = max(maxFringe, self.fringe.qsize())
+				self.maxFringe = max(self.maxFringe, self.fringe.qsize())
 
 		if(goalComplete): # we found the goal
 			backtrack = (len(self.maze.getGrid())-1, len(self.maze.getGrid())-1)
@@ -49,6 +53,12 @@ class AStar(object):
 	# returns the result of the heuristic. Implemented in subclass
 	def heuristic(self, item:tuple) ->float:
 		pass
+
+	def getMaxFringe(self):
+		return self.maxFringe
+
+	def getNodesExplored(self):
+		return self.nodesExplored
 
 	# reused from dfs
 	def validNeighbors(self, item):
