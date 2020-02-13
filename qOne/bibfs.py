@@ -5,24 +5,32 @@ import qOne.algo as algo
 
 class BiDirectionalBFS(algo.SearchAlgo):
 
-	def __init__(self, m: maze.Maze):
-		self.maze = m
+	def __init__(self, m: maze.Maze, start: tuple = None, goal: tuple = None):
 
-		front = (0, 0)
+		self.maze = m
 		# back is the goal
-		back = (self.maze.getDim() - 1, self.maze.getDim() - 1)
+
+		if goal is None:
+			self.back = (self.maze.getDim() - 1, self.maze.getDim() - 1)
+		else:
+			self.back = goal
+
+		if start is None:
+			self.front = (0, 0)
+		else:
+			self.front = start
 
 		# define all of the front
 		self.front_visited = set()
 		self.front_previous = dict()
 		self.front_fringe = queue()
-		self.front_fringe.append(front)
+		self.front_fringe.append(self.front)
 
 		# define all of the back
 		self.back_visited = set()
 		self.back_previous = dict()
 		self.back_fringe = queue()
-		self.back_fringe.append(back)
+		self.back_fringe.append(self.back)
 
 	def search(self) -> str or list:
 		while self.front_fringe and self.back_fringe:
@@ -102,7 +110,7 @@ class BiDirectionalBFS(algo.SearchAlgo):
 		while True:
 			f_path.append(f)
 
-			if f == (0, 0):
+			if f == self.front:
 				break
 
 			f = self.front_previous[f]
@@ -110,7 +118,7 @@ class BiDirectionalBFS(algo.SearchAlgo):
 
 		while True:
 			b_path.append(b)
-			if b == (self.maze.getDim() - 1, self.maze.getDim() - 1):
+			if b == self.back:
 				break
 
 			b = self.back_previous[b]
