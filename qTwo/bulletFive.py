@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 import qOne.maze as maze
 import qOne.AStarManhatten as AStarManhatten
 import qOne.AStarEuclid as AStarEuclid
+import qOne.bfs as bfs
 
 class compareAStar(object):
 	def __init__(self):
@@ -33,10 +34,8 @@ class compareAStar(object):
 				i+=1
 		self.manhattenData = np.array(self.manhattenData)
 		self.euclidData = np.array(self.euclidData)
-		divide = lambda x : x/self.noMazes
-		vectorDivide = np.vectorize(divide)
-		vectorDivide(self.manhattenData)
-		vectorDivide(self.euclidData) # divide all elements in both arrays
+
+
 
 		# Most of this bar chart code comes from here:
 		#https://matplotlib.org/3.1.0/gallery/lines_bars_and_markers/barchart.html#sphx-glr-gallery-lines-bars-and-markers-barchart-py
@@ -55,7 +54,7 @@ class compareAStar(object):
 		ax.set_ylabel('Resource usage')
 		ax.set_title('Manhatten vs Euclid')
 		ax.set_xticks(ind)
-		ax.set_xticklabels(('average max fringe size', 'average nodes explored', 'average path length found'))
+		ax.set_xticklabels(('total max fringe size', 'Total number nodes explored', 'total path length found'))
 		ax.legend()
 
 		self.autolabel(ax, rects1, "left")
@@ -86,3 +85,25 @@ class compareAStar(object):
 
 cAS = compareAStar()
 cAS.runTest()
+
+#m = maze.Maze(20,.3)
+#man = AStarManhatten.AStarManhatten(m)
+#resman = man.search()
+
+#euclid = AStarEuclid.AStarEuclid(m)
+#reseuclid = euclid.search()
+
+#b = bfs.Bfs(m)
+#resbfs = b.search()
+
+
+
+#m.gen_and_save_graphs_with_temp_path(resman)
+#print(len(resman))
+#m.gen_and_save_graphs_with_temp_path(reseuclid)
+#print(len(reseuclid))
+
+#m.gen_and_save_graphs_with_temp_path(resbfs)
+#print(len(resbfs))
+
+##	print('uh oh')

@@ -13,6 +13,8 @@ class AStar(algo.SearchAlgo):
 		self.nodesExplored = -1
 		# add items to fringe of pattern (priority_number, data)
 		self.prev = [[None for j in range(maze.getDim())] for i in range(maze.getDim())]
+		self.score = [[self.maze.getDim()**2 for j in range(maze.getDim())] for i in range(maze.getDim())]
+		self.score[0][0]=0
 		self.prev[0][0] = (0,0)
 
 	def search(self):
@@ -24,13 +26,17 @@ class AStar(algo.SearchAlgo):
 		while not goalComplete and not self.fringe.empty():
 			item = self.fringe.get()[1]
 			self.nodesExplored +=1
+			tempScore = self.score[item[0]][item[1]] + 1
 			if(item[0] == self.maze.getDim()-1 and item[1] == self.maze.getDim()-1):
 				goalComplete = True
 			else:
 				neighbors = self.validNeighbors(item)
 				for n in neighbors:
-					self.fringe.put(self.makeOrderedPair(n)) # add to fringe, will calculate distance.
-					self.prev[n[0]][n[1]] = item # update prev of the new thing in the fringe to be the calling node.
+					if(tempScore<self.score[n[0]][n[1]]):
+						self.score[n[0]][n[1]] = tempScore
+						self.fringe.put(self.makeOrderedPair(n)) # add to fringe, will calculate distance.
+						self.prev[n[0]][n[1]] = item # update prev of the new thing in the fringe to be the calling node.
+
 				self.maxFringe = max(self.maxFringe, self.fringe.qsize())
 
 		if(goalComplete): # we found the goal
@@ -49,7 +55,7 @@ class AStar(algo.SearchAlgo):
 
 	# im lazy
 	def makeOrderedPair(self, item):
-		return (self.heuristic(item), item)
+		return (self.heuristic(item) + self.score[item[0]][item[1]], item)
 
 	# returns the result of the heuristic. Implemented in subclass
 	def heuristic(self, item:tuple) ->float:
@@ -69,19 +75,19 @@ class AStar(algo.SearchAlgo):
 		j = item[1]
 		grid = self.maze.getGrid()
 		# item above. If it is not outside of the maze, is a free spot, and has not been visited yet, we pass this check.
-		if i - 1 != -1 and (grid[i - 1][j] == 0 or grid[i - 1][j] == 'g') and self.prev[i - 1][j] is None:
+		if i - 1 != -1 and (grid[i - 1][j] == 0 or grid[i - 1][j] == 'g'):
 			ret.append((i - 1, j))
 
 		# left
-		if j - 1 != -1 and (grid[i][j - 1] == 0 or grid[i][j - 1] == 'g') and self.prev[i][j - 1] is None:
+		if j - 1 != -1 and (grid[i][j - 1] == 0 or grid[i][j - 1] == 'g'):
 			ret.append((i, j - 1))
 
 		# down
-		if i + 1 < len(grid) and (grid[i + 1][j] == 0 or grid[i + 1][j] == 'g') and self.prev[i + 1][j] is None:
+		if i + 1 < len(grid) and (grid[i + 1][j] == 0 or grid[i + 1][j] == 'g'):
 			ret.append((i + 1, j))
 
 		# to the right. If it is not outside of the maze, is a free spot, and has not been visited yet, we pass this check.
-		if j + 1 < len(grid) and (grid[i][j + 1] == 0 or grid[i][j + 1] == 'g') and self.prev[i][j + 1] is None:
+		if j + 1 < len(grid) and (grid[i][j + 1] == 0 or grid[i][j + 1] == 'g'):
 			ret.append((i, j+1))
 		return ret
 
