@@ -12,7 +12,7 @@ if __name__ == '__main__':
     m = maze.Maze(10, 0.2)
 
     # run each algorithm on the maze
-    b = bfs.Bfs(m).bfs()
+    b = bfs.Bfs(m).search()
     print("BFS:")
     m.print_with_temp_path(b)
     print()
