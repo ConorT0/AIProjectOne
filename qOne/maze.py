@@ -73,13 +73,15 @@ class Maze(object):
 
 			return out
 
-	def gen_and_save_graphs_with_temp_path(self, path: list, save_path: str = "./", fname: str = "unnamed.png"):
+	def gen_and_save_graphs_with_temp_path(self, path: list, save_path: str = "./", fname: str = "unnamed.png", graph_title: str = "Un-named Graph"):
 		grid_copy = copy.deepcopy(self.get_grid_int_matrix_with_temp_path(path))
 
 		grid_copy = np.pad(grid_copy, pad_width=1, mode='constant', constant_values=5)
 		cMap = c.ListedColormap(['w', 'r', 'y', 'grey', 'green', 'black'])
 
 		plt.pcolormesh(grid_copy, cmap=cMap)
+
+		plt.title(graph_title)
 
 		plt.axes().set_aspect('equal')  # set the x and y axes to the same scale
 		plt.xticks([])  # remove the tick marks by setting to an empty list

@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
 				break
 
-		m.gen_and_save_graphs_with_temp_path(path, "bulletTwo", algo_name + ".png")
+		m.gen_and_save_graphs_with_temp_path(path, "bulletTwo", algo_name + ".png", algo_name)
 
 
 
