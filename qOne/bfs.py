@@ -31,7 +31,6 @@ class Bfs(algo.SearchAlgo):
                 for n in neighbors:
                     self.fringe.append(n)  # add all valid neighbors to queue
                     self.prev[n[0]][n[1]] = curr  # mark previous nodes
-        print("No solution found for:")
 
     def getValidNeighbors(self, curr):
         result = []  # initialize list for neighbors

@@ -3,8 +3,11 @@ The Maze class represents a single maze, of size nxn with probability weight p.
 0 is a free space, 1 is a blocked space, 2 is a fire
 """
 import random
-import collections
 import copy
+from matplotlib import colors as c
+import matplotlib.pyplot as plt
+import numpy as np
+import os
 
 class Maze(object):
 
@@ -38,7 +41,7 @@ class Maze(object):
 	def updateCell(self, data: any, r: int, c: int):
 		self.grid[r][c] = data
 
-	def get_grid_int_matrix_with_temp_path(self, path) -> list:
+	def get_grid_int_matrix_with_temp_path(self, path: list) -> list:
 		if path == None or path == []:
 			return None
 		else:
@@ -51,7 +54,7 @@ class Maze(object):
 
 			return grid_copy
 
-	def get_grid_with_temp_path(self, path) -> str:
+	def get_grid_with_temp_path(self, path: list) -> str:
 		out = str()
 		if path == None or path == []:
 			return "\x1b[5;30;41mFailure\x1b[0m"
@@ -69,6 +72,21 @@ class Maze(object):
 				out += "\n"
 
 			return out
+
+	def gen_and_save_graphs_with_temp_path(self, path: list, save_path: str = "./", fname: str = "unnamed.png"):
+		grid_copy = copy.deepcopy(self.get_grid_int_matrix_with_temp_path(path))
+
+		grid_copy = np.pad(grid_copy, pad_width=1, mode='constant', constant_values=5)
+		cMap = c.ListedColormap(['w', 'r', 'y', 'grey', 'green', 'black'])
+
+		plt.pcolormesh(grid_copy, cmap=cMap)
+
+		plt.axes().set_aspect('equal')  # set the x and y axes to the same scale
+		plt.xticks([])  # remove the tick marks by setting to an empty list
+		plt.yticks([])  # remove the tick marks by setting to an empty list
+		plt.axes().invert_yaxis()  # invert the y-axis so the first row of data is at the top
+
+		plt.savefig(os.path.join(save_path, fname))
 
 	def print_with_temp_path(self, path) -> None:
 		print(self.get_grid_with_temp_path(path))

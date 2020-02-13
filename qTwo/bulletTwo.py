@@ -4,11 +4,6 @@ from qOne import dfs
 from qOne import AStarEuclid
 from qOne import AStarManhatten
 from qOne import bibfs
-import time
-import copy
-from matplotlib import colors as c
-import matplotlib.pyplot as plt
-import numpy as np
 
 if __name__ == "__main__":
 
@@ -28,6 +23,7 @@ if __name__ == "__main__":
 	for algo_name, algo in algos_map.items():
 
 		path = None
+		m = None
 
 		while True:
 
@@ -38,23 +34,7 @@ if __name__ == "__main__":
 
 				break
 
-		grid_copy = copy.deepcopy(m.get_grid_int_matrix_with_temp_path(path))
-
-		grid_copy = np.pad(grid_copy, pad_width=1, mode='constant', constant_values=5)
-		cMap = c.ListedColormap(['w', 'r', 'y', 'grey', 'green', 'black'])
-
-		plt.pcolormesh(grid_copy, cmap=cMap)
-
-		plt.axes().set_aspect('equal')  # set the x and y axes to the same scale
-		plt.xticks([])  # remove the tick marks by setting to an empty list
-		plt.yticks([])  # remove the tick marks by setting to an empty list
-		plt.axes().invert_yaxis()  # invert the y-axis so the first row of data is at the top
-
-		plt.savefig("bulletTwo/"+algo_name+".png")
-
-		plt.clf()
-		plt.cla()
-		plt.close()
+		m.gen_and_save_graphs_with_temp_path(path, "bulletTwo", algo_name + ".png")
 
 
 
