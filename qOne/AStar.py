@@ -1,7 +1,7 @@
 import time
 import queue
 import math
-import maze
+import qOne.maze as maze
 
 
 class AStar(object):

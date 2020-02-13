@@ -1,5 +1,5 @@
-import AStar
-import maze
+import qOne.AStar as AStar
+import qOne.maze as maze
 
 class AStarManhatten(AStar.AStar):
 	def __init__(self, maze):

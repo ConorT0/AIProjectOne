@@ -1,6 +1,6 @@
-import AStar
+import qOne.AStar as AStar
 import math
-import maze
+import qOne.maze as maze
 
 class AStarEuclid(AStar.AStar):
 	def __init__(self, maze):

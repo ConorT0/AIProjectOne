@@ -12,17 +12,27 @@ if __name__ == '__main__':
     m = maze.Maze(10, 0.2)
 
     # run each algorithm on the maze
-    b = bfs.Bfs(m)
-    m.printGrid()
+    b = bfs.Bfs(m).bfs()
+    print("BFS:")
+    m.print_with_temp_path(b)
+    print()
 
-    bib = bibfs.search(m)
-    m.printGrid()
+    bib = bibfs.BiDirectionalBFS(m).search()
+    print("Bidirectional BFS:")
+    m.print_with_temp_path(bib)
+    print()
 
-    d = dfs.search(m)
-    m.printGrid()
+    d = dfs.Dfs(m).search()
+    print("DFS:")
+    m.print_with_temp_path(d)
+    print()
 
-    ae = AStarEuclid.search(m)
-    m.printGrid()
+    ae = AStarEuclid.AStarEuclid(m).search()
+    print("AStar (Euclidean Heuristic):")
+    m.print_with_temp_path(ae)
+    print()
 
-    am = AStarManhatten.search(m)
-    m.printGrid()
+    am = AStarManhatten.AStarManhatten(m).search()
+    print("AStar (Manhattan Heuristic):")
+    m.print_with_temp_path(am)
+    print()

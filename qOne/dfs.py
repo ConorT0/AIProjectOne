@@ -1,6 +1,6 @@
 import collections
 import time
-import maze
+import qOne.maze as maze
 
 
 class Dfs(object):

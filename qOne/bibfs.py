@@ -1,6 +1,6 @@
 # perform a bi-directional BFS on the grid
 from collections import deque as queue
-import maze
+import qOne.maze as maze
 
 
 class BiDirectionalBFS:

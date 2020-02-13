@@ -1,5 +1,5 @@
 import collections
-import maze
+import qOne.maze
 
 
 class Bfs(object):
@@ -31,7 +31,7 @@ class Bfs(object):
                 for n in neighbors:
                     self.fringe.append(n)  # add all valid neighbors to queue
                     self.prev[n[0]][n[1]] = curr  # mark previous nodes
-
+        print("No solution found for:")
 
     def getValidNeighbors(self, curr):
         result = []  # initialize list for neighbors
@@ -63,11 +63,3 @@ class Bfs(object):
             result.append((i, j + 1))
 
         return result
-
-if __name__ == '__main__':
-
-    m = maze.Maze(100, 0)
-    b = Bfs(m)
-    path = b.bfs()
-    m.print_with_temp_path(path)
-
