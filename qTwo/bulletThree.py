@@ -6,10 +6,10 @@ import qOne.dfs as dfs
 class findSolveability(object):
 	def __init__(self):
 		self.dim = 100
-		self.step = .05
+		self.step = .03
 		self.p = 0
-		self.mazePerP = 30
-		self.maxP = .5
+		self.mazePerP = 100
+		self.maxP = .6
 		i = 0.0
 		arr = []
 		while i < self.maxP:
@@ -34,10 +34,11 @@ class findSolveability(object):
 		self.ploty = np.array(self.ploty)
 		print(self.plotx)
 		print(self.ploty)
-		plt.title("p value VS. Maze solvability")
+		plt.title("p value VS. Maze solvability for graph of size " + str(self.dim))
 		plt.xlabel("p value")
 		plt.ylabel("solvability")
 		plt.plot(self.plotx,self.ploty)
+
 		plt.show()
 
 
