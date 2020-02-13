@@ -1,8 +1,8 @@
 import collections
 import qOne.maze
+import qOne.algo as algo
 
-
-class Bfs(object):
+class Bfs(algo.SearchAlgo):
     def __init__(self, maze):  # takes in maze object
         self.maze = maze
         self.fringe = collections.deque()
@@ -31,7 +31,6 @@ class Bfs(object):
                 for n in neighbors:
                     self.fringe.append(n)  # add all valid neighbors to queue
                     self.prev[n[0]][n[1]] = curr  # mark previous nodes
-        print("No solution found for:")
 
     def getValidNeighbors(self, curr):
         result = []  # initialize list for neighbors

@@ -1,13 +1,11 @@
 from qOne import maze
 from qOne import bfs
-from qOne import bfs
 from qOne import dfs
 from qOne import AStarEuclid
 from qOne import AStarManhatten
 from qOne import bibfs
 import time
-from collections import OrderedDict
-import itertools
+
 import numpy as np
 
 if __name__ == "__main__":

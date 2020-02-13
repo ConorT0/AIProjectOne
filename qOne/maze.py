@@ -3,10 +3,12 @@ The Maze class represents a single maze, of size nxn with probability weight p.
 0 is a free space, 1 is a blocked space, 2 is a fire
 """
 import random
-import collections
 import copy
+from matplotlib import colors as c
+import matplotlib.pyplot as plt
+import numpy as np
+import os
 
-0
 class Maze(object):
 
 	def __init__(self, dim: int, probability: float):
@@ -39,10 +41,23 @@ class Maze(object):
 	def updateCell(self, data: any, r: int, c: int):
 		self.grid[r][c] = data
 
-	def print_with_temp_path(self, path) -> None:
-
+	def get_grid_int_matrix_with_temp_path(self, path: list) -> list:
 		if path == None or path == []:
-			print("\x1b[5;30;41mFailure\x1b[0m")
+			return None
+		else:
+			grid_copy = copy.deepcopy(self.grid)
+			for cell in path:
+				grid_copy[cell[0]][cell[1]] = 2
+
+			grid_copy[0][0] = 3
+			grid_copy[-1][-1] = 4
+
+			return grid_copy
+
+	def get_grid_with_temp_path(self, path: list) -> str:
+		out = str()
+		if path == None or path == []:
+			return "\x1b[5;30;41mFailure\x1b[0m"
 		else:
 			grid_copy = copy.deepcopy(self.grid)
 			for cell in path:
@@ -52,8 +67,31 @@ class Maze(object):
 			grid_copy[-1][-1] = 'g'
 
 			for row in grid_copy:
-				print(*row, sep=" ")
-			print("Path:", path)
+				for cell in row:
+					out += " " + str(cell)
+				out += "\n"
+
+			return out
+
+	def gen_and_save_graphs_with_temp_path(self, path: list, save_path: str = "./", fname: str = "unnamed.png", graph_title: str = "Un-named Graph"):
+		grid_copy = copy.deepcopy(self.get_grid_int_matrix_with_temp_path(path))
+
+		grid_copy = np.pad(grid_copy, pad_width=1, mode='constant', constant_values=5)
+		cMap = c.ListedColormap(['w', 'r', 'y', 'grey', 'green', 'black'])
+
+		plt.pcolormesh(grid_copy, cmap=cMap)
+
+		plt.title(graph_title)
+
+		plt.axes().set_aspect('equal')  # set the x and y axes to the same scale
+		plt.xticks([])  # remove the tick marks by setting to an empty list
+		plt.yticks([])  # remove the tick marks by setting to an empty list
+		plt.axes().invert_yaxis()  # invert the y-axis so the first row of data is at the top
+
+		plt.savefig(os.path.join(save_path, fname))
+
+	def print_with_temp_path(self, path) -> None:
+		print(self.get_grid_with_temp_path(path))
 
 	def printGrid(self) -> None:
 		for i in self.grid:
@@ -61,3 +99,11 @@ class Maze(object):
 
 	def clear_grid(self):
 		self.grid = [[0 for x in range(self.dim)] for y in range(self.dim)]
+
+if __name__ == "__main__":
+	import maze
+	import bibfs
+	myM = maze.Maze(100, 0.1)
+	doB = bibfs.BiDirectionalBFS(myM)
+
+	myM.print_with_temp_path(doB.search())
