@@ -9,8 +9,8 @@ class findPathLength(object):
 		self.dim = 100
 		self.step = .03
 		self.p = 0
-		self.mazePerP = 1
-		self.maxP = .27
+		self.mazePerP = 100
+		self.maxP = .34
 		i = 0.0
 		arr = []
 		while i < self.maxP:
@@ -45,5 +45,5 @@ class findPathLength(object):
 
 		plt.show()
 
-f = findSolveability()
+f = findPathLength()
 f.runTest()

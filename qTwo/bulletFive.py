@@ -11,7 +11,7 @@ class compareAStar(object):
 	def __init__(self):
 		self.p = .2
 		self.dim = 100
-		self.noMazes = 5
+		self.noMazes = 100
 		self.manhattenData=[0,0,0] # 0- average max fringe size, 1- average nodes explored, 2- average path length
 		self.euclidData=[0,0,0]
 
@@ -54,7 +54,7 @@ class compareAStar(object):
 		ax.set_ylabel('Resource usage')
 		ax.set_title('Manhatten vs Euclid')
 		ax.set_xticks(ind)
-		ax.set_xticklabels(('total max fringe size', 'Total number nodes explored', 'total path length found'))
+		ax.set_xticklabels(('Sum max fringe size', 'Sum of all nodes explored', 'Sum of path length'))
 		ax.legend()
 
 		self.autolabel(ax, rects1, "left")
@@ -86,9 +86,24 @@ class compareAStar(object):
 cAS = compareAStar()
 cAS.runTest()
 
-#m = maze.Maze(20,.3)
+#m = maze.Maze(100,.2)
+#m.gen_and_save_graphs_with_temp_path([(0,0)])
 #man = AStarManhatten.AStarManhatten(m)
 #resman = man.search()
+#print(len(resman))
+
+#m=maze.Maze(100,0)
+#man = AStarManhatten.AStarManhatten(m)
+#resman = man.search()
+#print(len(resman))
+
+#print(len(resman))
+
+#m1 = maze.Maze(100,.2)
+
+#man1 = AStarManhatten.AStarManhatten(m1)
+#resman1 = man1.search()
+#print(len(resman1))
 
 #euclid = AStarEuclid.AStarEuclid(m)
 #reseuclid = euclid.search()
