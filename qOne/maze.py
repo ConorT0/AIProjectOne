@@ -41,18 +41,21 @@ class Maze(object):
 	def updateCell(self, data: any, r: int, c: int):
 		self.grid[r][c] = data
 
-	def get_grid_int_matrix_with_temp_path(self, path: list) -> list:
-		if path == None or path == []:
-			return None
-		else:
-			grid_copy = copy.deepcopy(self.grid)
+	def get_grid_int_temp_matrix_with_temp_path(self, path: list, grid: list, data: int) -> list:
+		grid_copy = copy.deepcopy(grid)
+
+		grid_copy[0][0] = 3
+		grid_copy[-1][-1] = 4
+
+		if path is not None and path is not []:
 			for cell in path:
-				grid_copy[cell[0]][cell[1]] = 2
+				grid_copy[cell[0]][cell[1]] = data
 
-			grid_copy[0][0] = 3
-			grid_copy[-1][-1] = 4
+		return grid_copy
 
-			return grid_copy
+	def get_grid_int_matrix_with_temp_path(self, path: list) -> list:
+
+		return self.get_grid_int_temp_matrix_with_temp_path(path, self.grid, 2)
 
 	def get_grid_with_temp_path(self, path: list) -> str:
 		out = str()
@@ -73,13 +76,12 @@ class Maze(object):
 
 			return out
 
-	def gen_and_save_graphs_with_temp_path(self, path: list, save_path: str = "./", fname: str = "unnamed.png", graph_title: str = "Un-named Graph") -> None:
-		grid_copy = copy.deepcopy(self.get_grid_int_matrix_with_temp_path(path))
+	def gen_and_save_graphs_with_temp_grid_only(self, grid: list, save_path: str = "./", fname: str = "unnamed.png", graph_title: str = "Un-named Graph") -> None:
 
-		grid_copy = np.pad(grid_copy, pad_width=1, mode='constant', constant_values=5)
-		cMap = c.ListedColormap(['w', 'r', 'y', 'grey', 'green', 'black'])
+		grid = np.pad(grid, pad_width=1, mode='constant', constant_values=5)
+		cMap = c.ListedColormap(['w', 'r', 'y', 'grey', 'green', 'black', 'orange'])
 
-		plt.pcolormesh(grid_copy, cmap=cMap)
+		plt.pcolormesh(grid, cmap=cMap)
 
 		plt.title(graph_title)
 
@@ -93,6 +95,13 @@ class Maze(object):
 		plt.cla()
 		plt.clf()
 		plt.close()
+
+	def gen_and_save_graphs_with_temp_path_and_temp_grid(self, path: list, grid: list, save_path: str = "./", fname: str = "unnamed.png", graph_title: str = "Un-named Graph"):
+		return self.gen_and_save_graphs_with_temp_grid_only(grid=self.get_grid_int_temp_matrix_with_temp_path(grid = grid, path=path, data=2), save_path=save_path, fname=fname, graph_title=graph_title)
+
+	def gen_and_save_graphs_with_temp_path(self, path: list, save_path: str = "./", fname: str = "unnamed.png", graph_title: str = "Un-named Graph"):
+		grid = self.get_grid_int_matrix_with_temp_path(path)
+		return self.gen_and_save_graphs_with_temp_path_and_temp_grid(path, grid, save_path, fname, graph_title)
 
 	def print_with_temp_path(self, path) -> None:
 		print(self.get_grid_with_temp_path(path))
