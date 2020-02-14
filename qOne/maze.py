@@ -17,6 +17,7 @@ class Maze(object):
 		self.grid = [[0 for x in range(dim)] for y in range(dim)] # Make a dim x dim grid
 		self.generateGrid()
 		self.path = list()
+		self.rank = -1 # rank is "hardness" of maze
 
 	# create a dim x dim sized grid and fill with spaces based on given probability
 	def generateGrid(self) -> None:
@@ -112,6 +113,13 @@ class Maze(object):
 
 	def clear_grid(self):
 		self.grid = [[0 for x in range(self.dim)] for y in range(self.dim)]
+
+	def __gt__(self, other):
+		if self.rank!=-1 and other.rank !=-1:
+			return self.rank > other.rank
+	def __ge__(self, other):
+		if self.rank!=-1 and other.rank !=-1:
+			return self.rank >= other.rank
 
 if __name__ == "__main__":
 	import maze
