@@ -4,6 +4,7 @@ from qOne import maze
 # All neighbors would be each cell in the path blocked. For example, if the path is of length 10, then there will be
 # 10 neighbors, each one with a different cell blocked.
 #
+import time
 import heapq
 from qThree import mazeNeighbor
 from qOne import maze
@@ -51,23 +52,33 @@ class mazeEnhancer(object):
 		return aStar.getNodesExplored()
 
 	def explore(self):
-		i = 0
+		endTime = time.time() + 300
 
-		while i<100:
-			maxn = []
-			for maze in self.mazes:
-				topNeighbors = mazeNeighbor.mazeNeightborManager(maze, self.type, self.noMazes)
-				maxn.append(topNeighbors.getMaxNeightbor())
-			for item in maxn:
-				if item[-1] >= self.mazes[0]:  # if the best neighbor is better than the worst current maze
+		while time.time() < endTime:
+			i = 0
+
+			while i<10:
+				maxn = []
+				for j in range(self.noMazes):
+					maze = self.mazes[j]
+					topNeighborExplorer = mazeNeighbor.mazeNeightborManager(maze, self.type, self.noMazes)
+					topneighbors = topNeighborExplorer.getMaxNeightbor()
+					self.mazes[j] = topneighbors[-1]
+					maxn.append(topneighbors)
+					heapq.heapify(self.mazes)
+				maxitem = maxn[0][-1]
+				for item in maxn:
+					maxitem = max(item[-1], maxitem)
+				if maxitem >= self.mazes[0]:  # if the best neighbor is better than the worst current maze
 					heapq.heappop(self.mazes)
-					heapq.heappush(self.mazes, item[-1])
-			i+=1
-		for m in self.mazes:
-			if(self.type):
-				self.rankDFS(m)
-			else:
-				self.rankAstar(m)
+					heapq.heappush(self.mazes, maxitem)
+				i+=1
+			for m in self.mazes:
+				if(self.type):
+					self.rankDFS(m)
+				else:
+					self.rankAstar(m)
+			print('done with one loop, current max is ' + str(self.mazes[-1].rank))
 
-m = mazeEnhancer(2,10)
+m = mazeEnhancer(1,100)
 m.explore()
