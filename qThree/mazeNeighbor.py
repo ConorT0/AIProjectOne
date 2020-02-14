@@ -44,11 +44,15 @@ class mazeNeightborManager(object):
 	def rankDFS(self) -> int:
 		d = dfs.Dfs(self.maze)
 		path = d.search()
+		if path is None:
+			return 0
 		return d.get_max_fringe()
 
 	def rankAstar(self) -> int:
 		aStar = AStarManhatten.AStarManhatten(self.maze)
 		path = aStar.search()
+		if path is None:
+			return 0
 		return aStar.getNodesExplored()
 
 	def invertCell(self):

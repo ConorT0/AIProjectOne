@@ -108,6 +108,9 @@ class Maze(object):
 	def __gt__(self, other):
 		if self.rank!=-1 and other.rank !=-1:
 			return self.rank > other.rank
+	def __ge__(self, other):
+		if self.rank!=-1 and other.rank !=-1:
+			return self.rank >= other.rank
 
 if __name__ == "__main__":
 	import maze
