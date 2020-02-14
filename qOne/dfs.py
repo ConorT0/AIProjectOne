@@ -7,6 +7,7 @@ class Dfs(algo.SearchAlgo):
 	def __init__(self, maze):
 		self.maze = maze
 		self.fringe =  collections.deque()
+		self.max_fringe = -1
 		# make prev array
 		self.prev = [[None for j in range(maze.getDim())] for i in range(maze.getDim())]
 
@@ -14,7 +15,7 @@ class Dfs(algo.SearchAlgo):
 		startTime = time.perf_counter ()
 		self.fringe.append((0,0))
 		self.prev[0][0] = (0,0)
-		maxFringe = 1
+		self.max_fringe = 1
 		#use pop() to get item from queue
 		while(self.fringe): # This checks if the dequeue is empty? python is such a mystical language...
 			item = self.fringe.pop()  # remove
@@ -35,7 +36,7 @@ class Dfs(algo.SearchAlgo):
 					self.fringe.append(i) # add valid neighbor to fringe
 					self.prev[i[0]][i[1]] = item # make valid neighbor's prev value the current node.
 
-			maxFringe = max(maxFringe,len(self.fringe))
+			self.max_fringe = max(self.max_fringe,len(self.fringe))
 
 		return None
 
@@ -76,7 +77,7 @@ class Dfsbad(algo.SearchAlgo):
 		startTime = time.perf_counter ()
 		self.fringe.append((0,0))
 		self.prev[0][0] = (0,0)
-		maxFringe = 1
+		self.max_fringe = 1
 		#use pop() to get item from queue
 		while(self.fringe): # This checks if the dequeue is empty? python is such a mystical language...
 			item = self.fringe.pop()  # remove
@@ -97,7 +98,7 @@ class Dfsbad(algo.SearchAlgo):
 					self.fringe.append(i) # add valid neighbor to fringe
 					self.prev[i[0]][i[1]] = item # make valid neighbor's prev value the current node.
 
-			maxFringe = max(maxFringe,len(self.fringe))
+			self.max_fringe = max(self.max_fringe,len(self.fringe))
 
 		return None
 
