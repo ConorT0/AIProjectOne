@@ -87,9 +87,6 @@ class FireStratOne(fireMaze.FireMaze):
 		# plt.clf()
 		# plt.close()
 
-
-
-
 if __name__ == "__main__":
 	f = FireStratOne(25, 0.2, 0.2)
 	p = f.walk_fire_maze()
@@ -97,9 +94,7 @@ if __name__ == "__main__":
 	# f.sumn()
 
 	g = copy.deepcopy(f.grid)
-	g = f.get_grid_int_temp_matrix_with_temp_path(grid = g, path = f.fire_path, data = 6)
-	g = f.get_grid_int_temp_matrix_with_temp_path(grid = g, path = p, data = 2)
+	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=f.fire_path, data=6)
+	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=p, data=2)
 
-
-
-	f.gen_and_save_graphs_with_temp_grid_only(grid = g, graph_title="Fire Strategy One")
+	f.gen_and_save_graphs_with_temp_grid_only(grid=g, graph_title="Fire Strategy One")
