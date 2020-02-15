@@ -5,10 +5,12 @@ import qOne.algo as algo
 
 class BiDirectionalBFS(algo.SearchAlgo):
 
-	def __init__(self, m: maze.Maze, start: tuple = None, goal: tuple = None):
+	def __init__(self, m: maze.Maze, start: tuple = None, goal: tuple = None, single_mode: bool = False):
 
 		self.maze = m
 		# back is the goal
+
+		self.single_mode = single_mode
 
 		if goal is None:
 			self.back = (self.maze.getDim() - 1, self.maze.getDim() - 1)
@@ -37,12 +39,19 @@ class BiDirectionalBFS(algo.SearchAlgo):
 
 			# do front and back DFS one branch at a time
 			f = self.bi_dry_helper(self.front_fringe, self.front_visited, self.back_visited, self.back_previous, self.front_previous)
-			b = self.bi_dry_helper(self.back_fringe, self.back_visited, self.front_visited, self.front_previous, self.back_previous)
 
-			if f is not None:
-				return self.generate_path_from(f)
-			elif b is not None:
-				return self.generate_path_from(b)
+
+			if not self.single_mode:
+				b = self.bi_dry_helper(self.back_fringe, self.back_visited, self.front_visited, self.front_previous, self.back_previous)
+
+				if f:
+					return self.generate_path_from(f)
+				elif b:
+					return self.generate_path_from(b)
+
+			else:
+				if f:
+					return self.generate_path_from(f)
 
 		return None
 
@@ -69,7 +78,10 @@ class BiDirectionalBFS(algo.SearchAlgo):
 					fringe.append(n)
 					prev[n] = c
 
-		return None
+		if self.single_mode and c == self.back:
+			return c
+		else:
+			return None
 
 	def find_valid_adjacent_nodes(self, matrix_node: tuple, visited: set, prev: dict, fringe: queue):
 
@@ -115,18 +127,21 @@ class BiDirectionalBFS(algo.SearchAlgo):
 
 			f = self.front_previous[f]
 
+		if not self.single_mode:
+			while True:
+				b_path.append(b)
+				if b == self.back:
+					break
 
-		while True:
-			b_path.append(b)
-			if b == self.back:
-				break
-
-			b = self.back_previous[b]
+				b = self.back_previous[b]
 
 		f_path.reverse()
 		# start b_path from 1 instead of 0 since they both contain same node
 		# we could also do f_path[:-1]
-		res = f_path + b_path[1:]
+		if self.single_mode:
+			res = f_path
+		else:
+			res = f_path + b_path[1:]
 
 		return res
 
@@ -134,9 +149,10 @@ class BiDirectionalBFS(algo.SearchAlgo):
 if __name__ == "__main__":
 
 	myM = maze.Maze(100, 0.1)
-	doB = BiDirectionalBFS(myM)
-
-	myM.print_with_temp_path(doB.search())
+	doB = BiDirectionalBFS(myM, start=(10,10), goal=(20,20), single_mode=True)
+	p = doB.search()
+	myM.print_with_temp_path(p)
+	print(p)
 
 
 
