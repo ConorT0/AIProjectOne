@@ -77,6 +77,8 @@ class Maze(object):
 
 			return out
 
+
+
 	def gen_and_save_graphs_with_temp_grid_only(self, grid: list, save_path: str = "./", fname: str = "unnamed.png", graph_title: str = "Un-named Graph") -> None:
 
 		grid = np.pad(grid, pad_width=1, mode='constant', constant_values=5)
