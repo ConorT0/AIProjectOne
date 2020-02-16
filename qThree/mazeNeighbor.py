@@ -22,12 +22,15 @@ class mazeNeightborManager(object):
 		# first we need to get what cells we are intrested in. We don't care about
 		# cells that are outside the fringe, as changing them literally can't affect the outcome because the
 		# program doesnt ever interact with them.
+		# Although the problem encounted with this methodology was that walls never entered the fringe, so they
+		# could not be removed. I ended up just looking at all cells and decreasing maze size.
 		cells = []
 
 		for a in range(0,self.maze.getDim()):
 			for b in range(0,self.maze.getDim()):
 				cells.append((a,b))
 
+		# This is for filtering to only look at cells from the fringe.
 		#if self.type:  # do your search algorithm. Then take prev array and flatten it, discarding nones.
 		#	d = dfs.Dfs(self.maze)
 		#	d.search()
@@ -46,9 +49,11 @@ class mazeNeightborManager(object):
 		#				cells.append(cell)
 
 		for cell in cells:
+			# For every cell that isnt the start and end, see if changing that cell makes the maze harder.
 			if (cell[0] != 0 and cell[1] != 0) and (
 					cell[0] != self.maze.getDim() - 1 and cell[
 				1] != self.maze.getDim() - 1):  # dont want to invert first or last.
+
 				self.changedCell = cell  # choose the cell to invert
 				self.invertCell()  # invert it
 				rank = 0
@@ -68,7 +73,7 @@ class mazeNeightborManager(object):
 						cop = copy.deepcopy(self.maze)
 						cop.rank = rank
 						heapq.heappush(topmazes, cop)  # add the current maze
-				self.invertCell()
+				self.invertCell() # invert the cell back
 
 
 		return topmazes

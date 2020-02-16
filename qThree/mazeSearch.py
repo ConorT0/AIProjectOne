@@ -17,13 +17,13 @@ class mazeEnhancer(object):
 	def __init__(self, noMazes: int, dim: int):
 		self.imnumber=0
 		self.dim = dim
-		self.type = False  # true for bfs, false for ASTAR
+		self.type = True  # true for bfs, false for ASTAR
 		self.mazes = []
 		self.noMazes = noMazes
 		self.changeThreshhold = 1
 		self.stopAfterBeingUnderThresholdThisManyTimes=25
 		x = 0
-		while (x < noMazes):
+		while (x < noMazes): # make our mazes to start with
 			m = maze.Maze(dim, .2)
 			if self.type:
 				if self.rankDFS(m) != 0:
@@ -37,7 +37,7 @@ class mazeEnhancer(object):
 		heapq.heapify(self.mazes)
 
 	def rankDFS(self, m:maze.Maze) -> int:
-		d = dfs.Dfs(m)
+		d = dfs.Dfs(m) # get the difficulty of a maze using dfs
 		path = d.search()
 		if path is None:
 			return 0
@@ -47,7 +47,7 @@ class mazeEnhancer(object):
 		return d.get_max_fringe()
 
 	def rankAstar(self, m:maze.Maze) -> int:
-		aStar = AStarManhatten.AStarManhatten(m)
+		aStar = AStarManhatten.AStarManhatten(m) # get the difficulty of a maze using astar
 		path = aStar.search()
 		if path is None:
 			return 0
@@ -56,7 +56,7 @@ class mazeEnhancer(object):
 		m.rank = aStar.getNodesExplored()
 		return aStar.getNodesExplored()
 
-	def explore(self):
+	def explore(self): # explores until the threshold of not improving is met.
 		old = 0 # the score of the last maze.
 		numbertimesunderthreshhold=0
 		while numbertimesunderthreshhold<self.stopAfterBeingUnderThresholdThisManyTimes:
@@ -69,12 +69,13 @@ class mazeEnhancer(object):
 					maze = self.mazes[j]
 					topNeighborExplorer = mazeNeighbor.mazeNeightborManager(maze, self.type, self.noMazes)
 					topneighbors = topNeighborExplorer.getMaxNeightbor()
-					if len(topneighbors) !=0:
-						newMaze = heapq.heappop(topneighbors)
+					if len(topneighbors) !=0: # replace the current maze with the best neighbor
+						newMaze = max(topneighbors)
 						self.mazes[j] = max(newMaze,self.mazes[j])
 
 					maxn.append(topneighbors)
 					heapq.heapify(self.mazes)
+				# I commented this out because all the mazes would end up exploring the same thing.
 				#maxitem = maxn[0][-1]
 				#for item in maxn: # out of all the neighbor's we just explored, find the best of the best.
 				#	maxitem = max(item[-1], maxitem)
