@@ -9,9 +9,8 @@ class FireStratTwo(fireMaze.FireMaze):
 	def __init__(self, dim: int, maze_probability: float, fireProbability: float):
 		super(FireStratTwo, self).__init__(dim, maze_probability, fireProbability)
 
-
-		# get some path it doesn't matter
-		# and make sure it has a solution to a non-fire grid
+		# we need to first check and make sure that without the fire, we have a solution in general
+		# if we don't generate a new grid
 		while True:
 			a = bibfs.BiDirectionalBFS(self)
 			self.path = a.search()
@@ -24,7 +23,6 @@ class FireStratTwo(fireMaze.FireMaze):
 
 		self.current_path = self.path
 		self.historic_path = list()
-
 		self.fire_progress = list()
 
 	# walk the solved path, and on each step update the cells that are on fire
@@ -99,4 +97,4 @@ if __name__ == "__main__":
 	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=f.fire_path, data=6)
 	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=p, data=2)
 
-	f.gen_and_save_graphs_with_temp_grid_only(grid=g, graph_title="Fire Strategy Two", fname="fstrat2.png")
+	f.gen_and_save_graphs_with_temp_grid_only(grid=g, graph_title="Fire Strategy Two", fname="fstrat2.png", save=False)

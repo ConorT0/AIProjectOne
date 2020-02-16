@@ -77,10 +77,7 @@ class Maze(object):
 
 			return out
 
-
-
-	def gen_and_save_graphs_with_temp_grid_only(self, grid: list, save_path: str = "./", fname: str = "unnamed.png", graph_title: str = "Un-named Graph") -> None:
-
+	def gen_graphs_with_temp_grid_only(self, grid: list, save_path: str = "./", fname: str = "unnamed.png", graph_title: str = "Un-named Graph", save=False):
 		grid = np.pad(grid, pad_width=1, mode='constant', constant_values=5)
 		cMap = c.ListedColormap(['w', 'r', 'y', 'grey', 'green', 'black', 'orange'])
 
@@ -93,11 +90,17 @@ class Maze(object):
 		plt.yticks([])  # remove the tick marks by setting to an empty list
 		plt.axes().invert_yaxis()  # invert the y-axis so the first row of data is at the top
 
-		plt.savefig(os.path.join(save_path, fname), dpi = 300, bbox_inches='tight')
+		if save:
+			plt.savefig(os.path.join(save_path, fname), dpi=300, bbox_inches='tight')
+		else:
+			plt.show()
 
 		plt.cla()
 		plt.clf()
 		plt.close()
+
+	def gen_and_save_graphs_with_temp_grid_only(self, grid: list, save_path: str = "./", fname: str = "unnamed.png", graph_title: str = "Un-named Graph", save=True) -> None:
+		self.gen_graphs_with_temp_grid_only(grid=grid, graph_title=graph_title, save_path=save_path, fname=fname,  save=save)
 
 	def gen_and_save_graphs_with_temp_path_and_temp_grid(self, path: list, grid: list, save_path: str = "./", fname: str = "unnamed.png", graph_title: str = "Un-named Graph"):
 		return self.gen_and_save_graphs_with_temp_grid_only(grid=self.get_grid_int_temp_matrix_with_temp_path(grid = grid, path=path, data=2), save_path=save_path, fname=fname, graph_title=graph_title)
