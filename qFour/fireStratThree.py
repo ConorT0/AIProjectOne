@@ -3,53 +3,15 @@ from qOne import AStar
 from qFour import fireStratTwo
 import math
 import queue
-from collections import deque
-import fireMaze
-from numba import jitclass, types, typed
-from numba import int32, float32
-
+from qFour import fireMaze
+from qFour import fireStrat
 
 # using AStar because we want to get the
 def get_euclidean_distance(a: tuple, b: tuple) -> float:
 	return math.sqrt(((a[0] - b[0]) ** 2) + ((a[1] - b[1]) ** 2))
 
-
-class FireStratThree(fireStratTwo.FireStratTwo):
-
-	def __init__(self, dim: int, maze_probability: float, fireProbability: float):
-		super().__init__(dim, maze_probability, fireProbability)
-
-	# walk the solved path, and on each step update the cells that are on fire
-	# returns a list with how far we were able to get in the path
-	# if the entire list is returned that means we were successful
-	def walk_fire_maze(self):
-
-		while True:
-			# store the next step in the path taken
-			self.historic_path.append(self.current_path[0])
-
-			# burn the fire one more iteration
-			self.updateFire()
-			self.fire_progress.append(list(self.fire_path))
-
-			# take a step by searching for a new path from the current cell
-			# if there is only 1 item in the current_path we're done
-			if len(self.current_path) == 1:
-				break
-			else:
-				# take the next step and recalculate the path
-				# this time using AStar with our custom heuristic
-				a = FireAStar(self, start=self.current_path[1])
-				self.current_path = a.search()
-
-			# no path found to goal
-			if self.current_path is None:
-				break
-
-		return self.historic_path
-
-class FireAStar(AStar.AStar):
-	def __init__(self, maze: FireStratThree, start: tuple = (0, 0), goal: tuple = None):
+class FireStratThree(AStar.AStar):
+	def __init__(self, maze: fireMaze.FireMaze, start: tuple = (0, 0), goal: tuple = None):
 		self.start = start
 		if goal:
 			self.goal = goal
@@ -58,25 +20,31 @@ class FireAStar(AStar.AStar):
 		self.maze = maze
 		self.fringe = queue.PriorityQueue()
 		self.prev = dict()
+		self.survived_fire = False
+
 
 	def search(self):
 		# add items to fringe of pattern (priority_number, data)
+
 		self.fringe.put(self.makeOrderedPair(self.start))  # start off the fringe
 		while not self.fringe.empty():
 			item = self.fringe.get()[1]
 
 			if item == self.goal:
-				return self.generate_path()
+				self.survived_fire = True
+				break
 			else:
+				self.maze.updateFire()
 				neighbors = self.validNeighbors(item)
 				for n in neighbors:
 					self.fringe.put(self.makeOrderedPair(n))  # add to fringe, will calculate distance.
 					self.prev[n] = item  # update prev of the new thing in the fringe to be the calling node.
-		return None
 
-	def generate_path(self):
+		return self.generate_path_from(item)
+
+	def generate_path_from(self, item: tuple) -> list:
 		# connect the two paths at the middle
-		c = self.goal
+		c = item
 		path = list()
 
 		while True:
@@ -144,13 +112,17 @@ class FireAStar(AStar.AStar):
 	def makeOrderedPair(self, item: tuple) -> tuple:
 		return tuple((self.heuristic(item), item))
 
+	def walk_fire_maze(self):
+		return self.search()
+
 
 if __name__ == "__main__":
-	f = FireStratThree(25, 0.2, 0.2)
-	p = f.walk_fire_maze()
+	f = fireMaze.FireMaze(25,0.2,0)
+	m = FireStratThree(f)
+	p = m.search()
 
 	g = copy.deepcopy(f.grid)
 	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=f.fire_path, data=6)
 	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=p, data=2)
 
-	f.gen_and_save_graphs_with_temp_grid_only(grid=g, graph_title="Fire Strategy Three", fname="fstrat3.png", save=True)
+	f.gen_and_save_graphs_with_temp_grid_only(grid=g, graph_title="Fire Strategy Three", fname="fstrat3.png", save=False)

@@ -16,8 +16,10 @@ class Maze(object):
 		self.dim = dim  # size of the graph
 		self.grid = [[0 for x in range(dim)] for y in range(dim)] # Make a dim x dim grid
 		self.generateGrid()
+		self.original_grid = copy.deepcopy(self.grid)
 		self.path = list()
 		self.rank = -1 # rank is "hardness" of maze
+
 
 	# create a dim x dim sized grid and fill with spaces based on given probability
 	def generateGrid(self) -> None:

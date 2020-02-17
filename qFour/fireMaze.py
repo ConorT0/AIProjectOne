@@ -1,7 +1,8 @@
-import qOne.maze as maze
+from qOne import maze
 import random
 from qOne import bibfs
 import copy
+from qOne import AStarEuclid
 
 class FireMaze(maze.Maze):
 	def __init__(self, dim: int, maze_probability: float, fireProbability: float):
@@ -9,9 +10,14 @@ class FireMaze(maze.Maze):
 		self.fire_path = set()
 		# inheritance proofing
 		self.path = list()
+
 		self.current_path = list()
 
 		super().__init__(dim, maze_probability)
+
+		# get some path it doesn't matter
+		# and make sure it has a solution to a non-fire grid
+		self.gen_until_basic_path_exists()
 
 		# ensure start cell has valid path to initial fire cell
 		self.gen_fire_start()
@@ -60,7 +66,7 @@ class FireMaze(maze.Maze):
 		# we have to do this separately
 		self.fire_path = self.fire_path.union(cells_caught_on_fire)
 
-	def gen_fire_start(self):
+	def gen_fire_start(self) -> tuple:
 		# we don't want the first cell, and we don't want the last cell (dim - 1 is the last cell)
 		# randomly pick a cell to initially set on fire
 		r = random.randint(1, self.dim - 2)
@@ -73,7 +79,7 @@ class FireMaze(maze.Maze):
 				self.fire_start = (r, c)
 				break
 			else:
-				self.clear_grid()
+				self.reset()
 				self.generateGrid()
 
 	def get_fire_path(self) -> set:
@@ -83,21 +89,49 @@ class FireMaze(maze.Maze):
 		self.fire_path = set()
 		self.fire_progress = list()
 
-	def clear_grid(self):
+	def reset(self):
 		super().clear_grid()
 		self.reset_fire()
 		self.current_path = list()
 		self.historic_path = list()
 
-	def generateGrid(self):
-		super().generateGrid()
+	def reset_but_keep_same_grid_and_same_fire_start(self):
+		self.reset()
+		self.grid = copy.deepcopy(self.original_grid)
+		self.path = copy.deepcopy(self.original_path)
+		self.current_path = self.path
+		self.fire_path.add(self.fire_start)
+
+	def gen_until_basic_path_exists(self):
+		# get some path it doesn't matter
+		# and make sure it has a solution to a non-fire grid
+		while True:
+			a = AStarEuclid.AStarEuclid(self)
+			self.path = a.search()
+
+			if self.path is None:
+				self.reset()
+				self.generateGrid()
+			else:
+				self.original_path = copy.deepcopy(self.path)
+				break
+
+	def reset_hard(self):
+		self.reset()
+		self.original_grid = list()
+		self.original_path = list()
+
+		self.gen_until_basic_path_exists()
+
 		self.gen_fire_start()
+		self.current_path = self.path
+		self.original_path = copy.deepcopy(self.current_path)
+
 
 if __name__ == '__main__':
 	test = FireMaze(10, 0.1, 1)
 	for x in range(0,100):
-		print()
-		test.printGrid()
+		print(test.fire_path)
 		test.updateFire()
 
 	print()

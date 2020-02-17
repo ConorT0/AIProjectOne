@@ -1,7 +1,7 @@
 # perform a bi-directional BFS on the grid
 from collections import deque as queue
-import qOne.maze as maze
-import qOne.algo as algo
+from qOne import maze
+from qOne import algo
 
 class BiDirectionalBFS(algo.SearchAlgo):
 
@@ -56,6 +56,8 @@ class BiDirectionalBFS(algo.SearchAlgo):
 		return None
 
 	def bi_dry_helper(self, fringe: queue, visited: set, opp_visited: set, opp_prev: dict, prev: dict) -> list or None:
+
+
 		c = fringe.popleft()
 
 		# if the current front node that was taken off the fringe
@@ -149,7 +151,7 @@ class BiDirectionalBFS(algo.SearchAlgo):
 if __name__ == "__main__":
 
 	myM = maze.Maze(100, 0.1)
-	doB = BiDirectionalBFS(myM, start=(10,10), goal=(20,20), single_mode=True)
+	doB = BiDirectionalBFS(myM, single_mode=True)
 	p = doB.search()
 	myM.print_with_temp_path(p)
 	print(p)

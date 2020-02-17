@@ -3,28 +3,15 @@ import copy
 from qOne import bibfs
 from qFour import fireMaze
 import collections
-import dfs
+from qOne import dfs
+from qFour import fireStrat
 
-class FireStratTwo(fireMaze.FireMaze):
+class FireStratTwo():
 
-	def __init__(self, dim: int, maze_probability: float, fireProbability: float):
-		super(FireStratTwo, self).__init__(dim, maze_probability, fireProbability)
-
-		# we need to first check and make sure that without the fire, we have a solution in general
-		# if we don't generate a new grid
-		while True:
-			a = dfs.Dfs(self)
-			self.path = a.search()
-
-			if self.path is None:
-				self.clear_grid()
-				self.generateGrid()
-			else:
-				break
-
-		self.current_path = self.path
-		self.historic_path = list()
-		self.fire_progress = list()
+	def __init__(self, maze: fireMaze.FireMaze):
+		self.maze = maze
+		self.maze.current_path = self.maze.path
+		self.survived_fire = False
 
 	# walk the solved path, and on each step update the cells that are on fire
 	# returns a list with how far we were able to get in the path
@@ -34,28 +21,25 @@ class FireStratTwo(fireMaze.FireMaze):
 
 		while True:
 			# slowly store the path taken
-			self.historic_path.append(self.current_path[0])
+			self.maze.historic_path.append(self.maze.current_path[0])
 
 			# burn the fire one more iteration
-			self.updateFire()
-			self.fire_progress.append(list(self.fire_path))
+			self.maze.updateFire()
+			self.maze.fire_progress.append(list(self.maze.fire_path))
 
 			# take a step by searching for a new path from the current cell
-			if len(self.current_path) == 1:
+			if len(self.maze.current_path) == 1:
+				# we made it to goal
+				self.survived_fire = True
 				break
 			else:
-				a = FireBiBFS(self, start=self.current_path[1])
-				self.current_path = a.search()
+				a = FireBiBFS(self.maze, start=self.maze.current_path[1])
+				self.maze.current_path = a.search()
 
-			if self.current_path is None:
+			if self.maze.current_path is None:
 				break
 
-		return self.historic_path
-
-	def generateGrid(self):
-		super().generateGrid()
-		self.current_path = self.path
-
+		return self.maze.historic_path
 
 class FireBiBFS(bibfs.BiDirectionalBFS):
 	def __init__(self, maze: fireMaze.FireMaze, start: tuple):
@@ -93,11 +77,10 @@ class FireBiBFS(bibfs.BiDirectionalBFS):
 		return valid_nodes
 
 
-
-
 if __name__ == "__main__":
-	f = FireStratTwo(25, 0.2, 0.2)
-	p = f.walk_fire_maze()
+	f = fireMaze.FireMaze(25, 0.2, 0.2)
+	m = FireStratTwo(f)
+	p = m.walk_fire_maze()
 
 	g = copy.deepcopy(f.grid)
 	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=f.fire_path, data=6)

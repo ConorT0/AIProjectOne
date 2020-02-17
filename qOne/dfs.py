@@ -138,3 +138,7 @@ if __name__ == '__main__':
 	d = Dfs(m)
 	path = d.search()
 
+
+
+	m.print_with_temp_path(path)
+
