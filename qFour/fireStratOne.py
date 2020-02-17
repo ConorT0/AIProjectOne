@@ -3,6 +3,7 @@ import copy
 import maze
 import fireMaze
 import bibfs
+import dfs
 
 
 class FireStratOne(fireMaze.FireMaze):
@@ -13,7 +14,7 @@ class FireStratOne(fireMaze.FireMaze):
 		# get some path it doesn't matter
 		# and make sure it has a solution to a non-fire grid
 		while True:
-			a = bibfs.BiDirectionalBFS(self)
+			a = dfs.Dfs(self)
 			self.path = a.search()
 
 			if self.path is None:

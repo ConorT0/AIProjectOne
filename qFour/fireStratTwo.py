@@ -3,6 +3,7 @@ import copy
 from qOne import bibfs
 from qFour import fireMaze
 import collections
+import dfs
 
 class FireStratTwo(fireMaze.FireMaze):
 
@@ -12,7 +13,7 @@ class FireStratTwo(fireMaze.FireMaze):
 		# we need to first check and make sure that without the fire, we have a solution in general
 		# if we don't generate a new grid
 		while True:
-			a = bibfs.BiDirectionalBFS(self)
+			a = dfs.Dfs(self)
 			self.path = a.search()
 
 			if self.path is None:

@@ -12,8 +12,8 @@ if __name__ == "__main__":
 	# q = 0, 0.1, 0.2, ..., 1.0
 	fire_probabilities = numpy.arange(0, 1.1, 0.1)
 	P0 = 0.2
-	DIM = 10
-	NUM_RUNS = 100
+	DIM = 100
+	NUM_RUNS = 3
 
 	strategies = {
 		"fireStratOne": {
@@ -35,6 +35,7 @@ if __name__ == "__main__":
 	}
 
 	nr = 0
+	nir = 0
 	for q in fire_probabilities:
 		for strat in strategies:
 
@@ -43,9 +44,9 @@ if __name__ == "__main__":
 
 			# make 1000 mazes for each strat and get the average success fail
 			for i in range(0, NUM_RUNS):
-				nr += 1
-				sys.stdout.write('\r' + str(nr))
-				sys.stdout.flush()
+				# nr += 1
+				# sys.stdout.write('\r' + str(nr))
+				# sys.stdout.flush()
 
 				path = f.walk_fire_maze()
 				if (path[-1][0], path[-1][1]) == (DIM - 1, DIM - 1):
@@ -55,7 +56,9 @@ if __name__ == "__main__":
 					fail_count += 1
 				f.clear_grid()
 				f.generateGrid()
-
+			nir+=1
+			sys.stdout.write('\r' + str(nir))
+			sys.stdout.flush()
 			# averaged over 1000
 			strategies[strat]["average_successes"][q] = float(success_count) / float(NUM_RUNS)
 			strategies[strat]["successes"].append(success_count)

@@ -5,6 +5,8 @@ import math
 import queue
 from collections import deque
 import fireMaze
+from numba import jitclass, types, typed
+from numba import int32, float32
 
 
 # using AStar because we want to get the
@@ -45,7 +47,6 @@ class FireStratThree(fireStratTwo.FireStratTwo):
 				break
 
 		return self.historic_path
-
 
 class FireAStar(AStar.AStar):
 	def __init__(self, maze: FireStratThree, start: tuple = (0, 0), goal: tuple = None):
