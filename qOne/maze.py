@@ -25,7 +25,7 @@ class Maze(object):
 	def generateGrid(self) -> None:
 		for i in range(0,self.dim):
 			for j in range(0,self.dim):
-				if(random.uniform(0,1) <= self.probability):
+				if(np.random.random() <= self.probability):
 					self.grid[i][j] = 1
 				else:
 					self.grid[i][j] = 0

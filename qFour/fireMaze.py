@@ -3,6 +3,7 @@ import random
 from qOne import bibfs
 import copy
 from qOne import AStarEuclid
+import numpy as np
 
 class FireMaze(maze.Maze):
 	def __init__(self, dim: int, maze_probability: float, fireProbability: float):
@@ -32,8 +33,6 @@ class FireMaze(maze.Maze):
 		c = cell[1]
 		k = 0
 
-		grid = self.getGrid()
-
 		if r > 0:
 			if (r - 1, c) in self.fire_path:
 				k += 1
@@ -59,7 +58,7 @@ class FireMaze(maze.Maze):
 				if (r, c) not in self.fire_path:
 					k = self.count_on_fire_neighbors((r, c))
 					cell_probability = 1 - pow((1 - self.fireProbability), k)
-					if random.uniform(0, 1) <= cell_probability and self.grid[r][c] != 1:
+					if np.random.random() <= cell_probability and self.grid[r][c] != 1:
 						cells_caught_on_fire.add((r, c))
 
 		# update the grid with the new cells

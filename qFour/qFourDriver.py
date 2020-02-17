@@ -13,7 +13,7 @@ if __name__ == "__main__":
 	# q = 0, 0.1, 0.2, ..., 1.0
 	fire_probabilities = numpy.arange(0, 1.1, 0.1)
 	P0 = 0.2
-	DIM = 100
+	DIM = 25
 	NUM_RUNS = 100
 
 	strategies = {
@@ -39,9 +39,7 @@ if __name__ == "__main__":
 	nir = 0
 	for q in fire_probabilities:
 		m = fireMaze.FireMaze(DIM, P0, q)
-		# for strat in strategies:
-		strat = "fireStratOne"
-		for i in range(0,1):
+		for strat in strategies:
 			success_count, fail_count = 0, 0
 
 			# make 1000 mazes for each strat and get the average success fail
