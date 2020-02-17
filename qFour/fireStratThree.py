@@ -117,12 +117,12 @@ class FireStratThree(AStar.AStar):
 
 
 if __name__ == "__main__":
-	f = fireMaze.FireMaze(25,0.2,0)
+	f = fireMaze.FireMaze(dim=100, fireProbability=0.2, maze_probability=0.2)
 	m = FireStratThree(f)
-	p = m.search()
+	p = m.walk_fire_maze()
 
 	g = copy.deepcopy(f.grid)
-	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=f.fire_path, data=6)
+	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=list(f.fire_path), data=6)
 	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=p, data=2)
 
-	f.gen_and_save_graphs_with_temp_grid_only(grid=g, graph_title="Fire Strategy Three", fname="fstrat3.png", save=False)
+	f.gen_and_save_graphs_with_temp_grid_only(grid=g, graph_title="Fire Strategy Three w/ q = 0.2", fname="fstrat3.png", save=True)

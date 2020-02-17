@@ -35,7 +35,7 @@ class FireStratOne(fireStrat.FireStrat):
 
 
 if __name__ == "__main__":
-	m = fireMaze.FireMaze(100, 0.2, 0)
+	m = fireMaze.FireMaze(100, 0.2, 0.2)
 	f = FireStratOne(m)
 
 	while False:
@@ -52,4 +52,4 @@ if __name__ == "__main__":
 	g = m.get_grid_int_temp_matrix_with_temp_path(grid=g, path=m.fire_path, data=6)
 	g = m.get_grid_int_temp_matrix_with_temp_path(grid=g, path=p, data=2)
 
-	m.gen_and_save_graphs_with_temp_grid_only(grid=g, graph_title="Fire Strategy One", save=False)
+	m.gen_and_save_graphs_with_temp_grid_only(grid=g, graph_title="Fire Strategy One", fname="fstrat1.png", save=True)
