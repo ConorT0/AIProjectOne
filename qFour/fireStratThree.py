@@ -15,7 +15,7 @@ def get_euclidean_distance(a: tuple, b: tuple) -> float:
 class FireStratThree(fireStratTwo.FireStratTwo):
 
 	def __init__(self, dim: int, maze_probability: float, fireProbability: float):
-		super(FireStratThree, self).__init__(dim, maze_probability, fireProbability)
+		super().__init__(dim, maze_probability, fireProbability)
 
 	# walk the solved path, and on each step update the cells that are on fire
 	# returns a list with how far we were able to get in the path
@@ -45,6 +45,7 @@ class FireStratThree(fireStratTwo.FireStratTwo):
 				break
 
 		return self.historic_path
+
 
 class FireAStar(AStar.AStar):
 	def __init__(self, maze: FireStratThree, start: tuple = (0, 0), goal: tuple = None):
@@ -140,17 +141,15 @@ class FireAStar(AStar.AStar):
 		return f_dist + g_dist
 
 	def makeOrderedPair(self, item: tuple) -> tuple:
-		return (self.heuristic(item), item)
+		return tuple((self.heuristic(item), item))
 
 
 if __name__ == "__main__":
 	f = FireStratThree(25, 0.2, 0.2)
-	p = f.path
 	p = f.walk_fire_maze()
 
 	g = copy.deepcopy(f.grid)
 	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=f.fire_path, data=6)
 	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=p, data=2)
 
-	f.gen_and_save_graphs_with_temp_grid_only(grid=g, graph_title="Fire Strategy Three", fname="fstrat3.png",
-	                                          save=True)
+	f.gen_and_save_graphs_with_temp_grid_only(grid=g, graph_title="Fire Strategy Three", fname="fstrat3.png", save=True)

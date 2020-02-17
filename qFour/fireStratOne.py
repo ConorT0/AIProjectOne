@@ -8,7 +8,7 @@ import bibfs
 class FireStratOne(fireMaze.FireMaze):
 
 	def __init__(self, dim: int, maze_probability: float, fireProbability: float):
-		super(FireStratOne, self).__init__(dim, maze_probability, fireProbability)
+		super().__init__(dim, maze_probability, fireProbability)
 
 		# get some path it doesn't matter
 		# and make sure it has a solution to a non-fire grid
@@ -88,13 +88,20 @@ class FireStratOne(fireMaze.FireMaze):
 		# plt.close()
 
 if __name__ == "__main__":
-	f = FireStratOne(25, 0.2, 0.2)
-	p = f.walk_fire_maze()
+	f = FireStratOne(10, 0.2, 0.1)
 
-	# f.sumn()
+	while False:
+
+		p = f.walk_fire_maze()
+		if p == []:
+			break
+		f.clear_grid()
+		f.generateGrid()
+
+	p = f.walk_fire_maze()
 
 	g = copy.deepcopy(f.grid)
 	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=f.fire_path, data=6)
 	g = f.get_grid_int_temp_matrix_with_temp_path(grid=g, path=p, data=2)
 
-	f.gen_and_save_graphs_with_temp_grid_only(grid=g, graph_title="Fire Strategy One")
+	f.gen_and_save_graphs_with_temp_grid_only(grid=g, graph_title="Fire Strategy One", save=False)

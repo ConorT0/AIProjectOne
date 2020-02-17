@@ -5,15 +5,20 @@ import copy
 
 class FireMaze(maze.Maze):
 	def __init__(self, dim: int, maze_probability: float, fireProbability: float):
-
-		self.FIRE_SYMBOL = 6
-
-		super(FireMaze, self).__init__(dim, maze_probability)
 		self.fireProbability = fireProbability
 		self.fire_path = set()
+		# inheritance proofing
+		self.path = list()
+		self.current_path = list()
+
+		super().__init__(dim, maze_probability)
 
 		# ensure start cell has valid path to initial fire cell
 		self.gen_fire_start()
+
+		# inheritance proofing
+		self.fire_progress = list()
+		self.historic_path = list()
 
 	# given a cell, find all the neighbors that are on fire
 	def count_on_fire_neighbors(self, cell: tuple) -> int:
@@ -76,6 +81,17 @@ class FireMaze(maze.Maze):
 
 	def reset_fire(self):
 		self.fire_path = set()
+		self.fire_progress = list()
+
+	def clear_grid(self):
+		super().clear_grid()
+		self.reset_fire()
+		self.current_path = list()
+		self.historic_path = list()
+
+	def generateGrid(self):
+		super().generateGrid()
+		self.gen_fire_start()
 
 if __name__ == '__main__':
 	test = FireMaze(10, 0.1, 1)

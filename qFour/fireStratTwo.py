@@ -51,6 +51,10 @@ class FireStratTwo(fireMaze.FireMaze):
 
 		return self.historic_path
 
+	def generateGrid(self):
+		super().generateGrid()
+		self.current_path = self.path
+
 
 class FireBiBFS(bibfs.BiDirectionalBFS):
 	def __init__(self, maze: fireMaze.FireMaze, start: tuple):
@@ -88,9 +92,10 @@ class FireBiBFS(bibfs.BiDirectionalBFS):
 		return valid_nodes
 
 
+
+
 if __name__ == "__main__":
 	f = FireStratTwo(25, 0.2, 0.2)
-	p = f.path
 	p = f.walk_fire_maze()
 
 	g = copy.deepcopy(f.grid)
